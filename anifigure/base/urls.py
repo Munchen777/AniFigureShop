@@ -13,5 +13,6 @@ urlpatterns = [
     path("anime-category/<slug:category_slug>/<slug:product_slug>", views.anime_products_view, name="anime-product"),
 
 
+
 ]
 

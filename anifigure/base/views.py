@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, Http404, HttpResponseNotFound
 
-from base.models import Category, Product
+from base.models import Category, Product, ProductImage
 
 
 def page_not_found(request, exception):
@@ -31,14 +31,21 @@ def anime_category_products_view(request, category_slug):
 
 
 def anime_products_view(request, category_slug, product_slug):
-    products = Product.objects.filter(slug=product_slug)
+    product = Product.objects.get(slug=product_slug)
+    product_images = ProductImage.objects.filter(product=product)
+
+
 
     data = {
         "title": product_slug,
-        "products": products,
+        "product": product,
+        "product_images": product_images,
 
     }
     return render(request, 'base/product.html', context=data)
+
+
+
 
 
 def random_category_view(request):
