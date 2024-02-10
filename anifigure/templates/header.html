@@ -1,20 +1,19 @@
 
 {% load static %}
-    <link
-      rel="shortcut icon"
-      href="{% static 'base/images/favicon.svg' %}"
-      type="image/x-icon"
-    />
-    <link rel="stylesheet" href="{% static 'base/css/tailwind.css' %}"/>
 
-    <script defer src='{% static "base/js/alpine.min.js" %}'></script>
-  </head>
-  <body>
+<link rel="stylesheet" href="{% static 'base/css/tailwind.css' %}"/>
+
+
+
+
 <style>
-  header {
+ header {
   position: fixed;
-    z-index: 9999;
-}</style>
+  top: 0; /* Закрепить заголовок в самом верху страницы */
+
+  z-index: 9999;
+}
+</style>
 
     <header id="header_id"
       x-data="
@@ -22,7 +21,7 @@
           navbarOpen: false
         }
       "
-      class="flex w-full items-center bg-white dark:bg-dark"
+      class="flex w-full items-center bg-white dark:bg-dark "
     >
       <div class="container mx-auto">
         <div class="relative -mx-4 flex items-center justify-between">

@@ -1,13 +1,237 @@
-{% extends 'base.html' %}
+<!doctype html>
 {% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>{{ title }}</title>
+    <link
+      rel="shortcut icon"
+      href='{% static "base/images/favicon.svg" %}'
+      type="image/x-icon"
+    />
+
+    <link rel="stylesheet" href='{% static "base/css/tailwind.css" %}' />
+    <link rel="stylesheet" href="{% static 'base/css/roulette.css' %}">
+
+
+    <script defer src='{% static "base/js/alpine.min.js" %} '></script>
+  </head>
+  <style>
+  header {
+  position: fixed;
+  top: 0; /* Закрепить заголовок в самом верху страницы */
+
+  z-index: 9999;
+}
+</style>
+
+    <header id="header_id"
+      x-data="
+        {
+          navbarOpen: false
+        }
+      "
+      class="flex w-full items-center bg-white dark:bg-dark "
+    >
+      <link rel="stylesheet" href="{% static 'base/css/tailwind.css' %}"/>
+      <div class="container mx-auto">
+        <div class="relative -mx-4 flex items-center justify-between">
+          <div class="w-60 max-w-full px-4">
+            <a href="{% url 'main' %}"  onclick="document.getElementById('header_id').scrollIntoView({ behavior: 'smooth' });" class="block w-full py-5">
+              <img
+                src='{% static "base/images/logo/logo.svg" %}'
+                alt="logo"
+                class="dark:hidden"
+              />
+              <img
+                src='{% static "base/images/logo/logo-white.svg" %}'
+                alt="logo"
+                class="hidden dark:block"
+              />
+            </a>
+          </div>
+          <div class="flex w-full items-center justify-between px-4">
+            <div>
+              <button
+                @click="navbarOpen = !navbarOpen"
+                :class="navbarOpen && 'navbarTogglerActive' "
+                id="navbarToggler"
+                class="absolute right-4 top-1/2 block -translate-y-1/2 rounded-lg px-3 py-[6px] ring-primary focus:ring-2 lg:hidden"
+              >
+                <span
+                  class="relative my-[6px] block h-[2px] w-[30px] bg-body-color dark:bg-white"
+                ></span>
+                <span
+                  class="relative my-[6px] block h-[2px] w-[30px] bg-body-color dark:bg-white"
+                ></span>
+                <span
+                  class="relative my-[6px] block h-[2px] w-[30px] bg-body-color dark:bg-white"
+                ></span>
+              </button>
+              <nav
+                :class="!navbarOpen && 'hidden' "
+                id="navbarCollapse"
+                class="absolute right-4 top-full w-full max-w-[250px] rounded-lg bg-white px-6 py-5 shadow dark:bg-dark-2 lg:static lg:block lg:w-full lg:max-w-full lg:shadow-none lg:dark:bg-transparent"
+              >
+                <ul class="block lg:flex">
+                  <li>
+                     <a href="{% url 'main' %}"
+                      class="flex py-2 text-base font-medium text-body-color hover:text-dark dark:text-dark-6 dark:hover:text-white lg:ml-12 lg:inline-flex"
+                    >
+                      Главная
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="{% url 'main' %}.#about_id"
+                      class="flex py-2 text-base font-medium text-body-color hover:text-dark dark:text-dark-6 dark:hover:text-white lg:ml-12 lg:inline-flex"
+                    >
+                      О нас
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="javascript:void(0)"
+                      class="flex py-2 text-base font-medium text-body-color hover:text-dark dark:text-dark-6 dark:hover:text-white lg:ml-12 lg:inline-flex"
+                    >
+                      Акции
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+            <div class="hidden justify-end pr-16 sm:flex lg:pr-0">
+              <a
+                href="javascript:void(0)"
+                class="px-7 py-3 text-base font-medium text-dark hover:text-primary dark:text-white"
+              >
+                Вход
+              </a>
+              <a
+                href="javascript:void(0)"
+                class="rounded-md bg-primary px-7 py-3 text-base font-medium text-white hover:bg-primary/90"
+              >
+                Регистрация
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- ====== Navbar Section End -->
 
 
 {% block content %}
 
-{% include 'header.html' %}
 
 
+
+<div class="containerr">
+  <div class="app">
+    <img class="pointer" src="{% static 'base/images/random_cat/pointer.png' %}" alt=""/>
+    <div class="scope">
+         <ul class="list">
+
+            </ul>
+    </div>
+
+
+    <button onclick="start()" class="start">Крутить</button>
+</div>
+</div>
+
+
+
+
+
+
+<script>
+const cells = 31
+
+// From 0.001 to 100
+const items = [
+  {name: 'Алишка гей', img: "{% static 'base/images/random_cat/alishka.jpg' %}", chance: 70},
+  {name: 'Алишка жеский гей', img: "{% static 'base/images/random_cat/animeme1.png' %}", chance: 20},
+  {name: 'Алишка не гей', img: "{% static 'base/images/random_cat/alishka2.png' %}", chance: 10}
+]
+
+function getItem() {
+  const totalChance = items.reduce((acc, item) => acc + item.chance, 0);
+  let randomNum = Math.floor(Math.random() * totalChance);
+
+  for (const item of items) {
+    if (randomNum < item.chance) {
+      return item;
+    }
+    randomNum -= item.chance;
+  }
+}
+
+function generateItems() {
+  document.querySelector('.list').remove()
+  document.querySelector('.scope').innerHTML = `
+    <ul class="list"></ul>
+  `
+
+  const list = document.querySelector('.list')
+
+  for (let i = 0; i < cells; i++) {
+    const item = getItem()
+
+    const li = document.createElement('li')
+    li.setAttribute('data-item', JSON.stringify(item))
+    li.classList.add('list__item')
+    li.innerHTML = `
+      <img src="${item.img}" alt="" />
+    `
+
+    list.append(li)
+  }
+}
+
+generateItems()
+
+let isStarted = false
+let isFirstStart = true
+
+function start() {
+  if (isStarted) return
+  else isStarted = true
+
+  if (!isFirstStart) generateItems()
+  else isFirstStart = false
+  const list = document.querySelector('.list')
+
+  setTimeout(() => {
+    list.style.left = '50%'
+    list.style.transform = 'translate3d(-50%, 0, 0)'
+  }, 0)
+
+  const item = list.querySelectorAll('li')[15]
+
+  list.addEventListener('transitionend', () => {
+    isStarted = false
+    item.classList.add('active')
+    const data = JSON.parse(item.getAttribute('data-item'))
+
+    console.log(data); //ВОТ ТУТ ЛОГИКА С ВЫПАДАЮЩИМ ПРЕДМЕТОМ ДОЛЖНА БЫТЬ
+  }, {once: true})
+}
+
+
+
+
+
+
+</script>
+
+
+
+
+{% endblock %}
 
 {% include 'footer.html' %}
 
-{% endblock %}

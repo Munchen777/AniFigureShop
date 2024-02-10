@@ -16,9 +16,10 @@
             <div
               class="mb-10 overflow-hidden rounded-lg bg-white shadow-1 duration-300 hover:shadow-3 dark:bg-dark-2 dark:shadow-card dark:hover:shadow-3"
             >
+
               <img
-                src='{% static "base/images/cards/anime_category/sasuke.jpg" %}'
-                alt="image"
+                src="{{ product.image_src }}"
+                alt="{{ product.name }}"
                 class="w-full"
               />
               <div class="p-8 text-center sm:p-9 md:p-7 xl:p-9">
@@ -40,7 +41,7 @@
                   href="{% url 'anime-product' category_slug=product.category.slug product_slug=product.slug %}"
                   class="inline-block rounded-full border border-gray-3 px-7 py-2 text-base font-medium text-body-color transition hover:border-primary hover:bg-primary hover:text-white dark:border-dark-3 dark:text-dark-6"
                 >
-                  {{ product.price }}
+                  ₽{{ product.price|floatformat:0 }}
                 </a>
               </div>
             </div>
