@@ -19,7 +19,8 @@
 
     <script defer src='{% static "base/js/alpine.min.js" %} '></script>
   </head>
-  <style>
+
+<style>
   header {
   position: fixed;
   top: 0; /* Закрепить заголовок в самом верху страницы */
@@ -130,8 +131,10 @@
 
 
 <div class="containerr">
+  <h2 class="text-center py-10 text-5xl OurPrizes">Выигрывай бесплатные фигурки!</h2>
   <div class="app">
-    <img class="pointer" src="{% static 'base/images/random_cat/pointer.png' %}" alt=""/>
+
+    <img class="pointer" src="{% static 'base/images/random_cat/pointer3.png' %}" alt=""/>
     <div class="scope">
          <ul class="list">
 
@@ -141,21 +144,106 @@
 
     <button onclick="start()" class="start">Крутить</button>
 </div>
+    <div class="container mx-auto">
+  <h2 class="text-center py-32 text-3xl OurPrizes">Наши призы:</h2>
+
+  <div class="-mx-4 flex flex-wrap">
+    <!-- ====== First block -->
+    <div class="w-1/2 px-4 md:w-1/2 xl:w-1/4 lg:w-1/6">
+      <div class="mb-10 overflow-hidden rounded-lg bg-white shadow-1 duration-300 hover:shadow-3 dark:bg-dark-2 dark:shadow-card dark:hover:shadow-3 w-full max-w-[400px]">
+        <img src="{% static 'base/images/random_cat/alishka.jpg' %}" alt="image" class="w-full max-w-[400px]">
+        <div class="p-8 text-center sm:p-9 md:p-7 xl:p-9">
+          <h3 class="mb-4 block text-xl font-semibold text-dark hover:text-primary dark:text-white sm:text-[22px] md:text-xl lg:text-[22px] xl:text-xl 2xl:text-[22px]">
+            Алишка
+          </h3>
+          <p class="mb-7 text-base leading-relaxed text-body-color dark:text-dark-6">
+            Скидка 10% на всё
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== Second block -->
+    <div class="w-1/2 px-4 md:w-1/2 xl:w-1/4 lg:w-1/6">
+      <div class="mb-10 overflow-hidden rounded-lg bg-white shadow-1 duration-300 hover:shadow-3 dark:bg-dark-2 dark:shadow-card dark:hover:shadow-3 w-full max-w-[400px]">
+        <img src="{% static 'base/images/random_cat/alishka.jpg' %}" alt="image" class="w-full max-w-[400px]">
+        <div class="p-8 text-center sm:p-9 md:p-7 xl:p-9">
+          <h3 class="mb-4 block text-xl font-semibold text-dark hover:text-primary dark:text-white sm:text-[22px] md:text-xl lg:text-[22px] xl:text-xl 2xl:text-[22px]">
+            АлишкаX20
+          </h3>
+          <p class="mb-7 text-base leading-relaxed text-body-color dark:text-dark-6">
+            Скидка 20% на всё
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== Third block -->
+    <div class="w-1/2 px-4 md:w-1/2 xl:w-1/4 lg:w-1/6">
+      <div class="mb-10 overflow-hidden rounded-lg bg-white shadow-1 duration-300 hover:shadow-3 dark:bg-dark-2 dark:shadow-card dark:hover:shadow-3 w-full max-w-[400px]">
+        <img src="{% static 'base/images/random_cat/alishka.jpg' %}" alt="image" class="w-full max-w-[400px]">
+        <div class="p-8 text-center sm:p-9 md:p-7 xl:p-9">
+          <h3 class="mb-4 block text-xl font-semibold text-dark hover:text-primary dark:text-white sm:text-[22px] md:text-xl lg:text-[22px] xl:text-xl 2xl:text-[22px]">
+            АлишкаX30
+          </h3>
+          <p class="mb-7 text-base leading-relaxed text-body-color dark:text-dark-6">
+            Скидка 30% на всё
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== Fourth block -->
+    <div class="w-1/2 px-4 md:w-1/2 xl:w-1/4 lg:w-1/6">
+      <div class="mb-10 overflow-hidden rounded-lg bg-white shadow-1 duration-300 hover:shadow-3 dark:bg-dark-2 dark:shadow-card dark:hover:shadow-3 w-full max-w-[400px]">
+        <img src="{% static 'base/images/random_cat/alishka2.png' %}" alt="image" class="w-full max-w-[400px]">
+        <div class="p-8 text-center sm:p-9 md:p-7 xl:p-9">
+          <h3 class="mb-4 block text-xl font-semibold text-dark hover:text-primary dark:text-white sm:text-[22px] md:text-xl lg:text-[22px] xl:text-xl 2xl:text-[22px]">
+            Фигурка
+          </h3>
+          <p class="mb-7 text-base leading-relaxed text-body-color dark:text-dark-6">
+            Фигурка до 3000р
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== Fiveth block -->
+    <div class="w-1/2 px-4 md:w-1/2 xl:w-1/4 lg:w-1/6">
+      <div class="mb-10 overflow-hidden rounded-lg bg-white shadow-1 duration-300 hover:shadow-3 dark:bg-dark-2 dark:shadow-card dark:hover:shadow-3 w-full max-w-[400px]">
+        <img src="{% static 'base/images/random_cat/alishka2.png' %}" alt="image" class="w-full max-w-[400px]">
+        <div class="p-8 text-center sm:p-9 md:p-7 xl:p-9">
+          <h3 class="mb-4 block text-xl font-semibold text-dark hover:text-primary dark:text-white sm:text-[22px] md:text-xl lg:text-[22px] xl:text-xl 2xl:text-[22px]">
+            ФигуркаX5
+          </h3>
+          <p class="mb-7 text-base leading-relaxed text-body-color dark:text-dark-6">
+            Фигурка до 5000р
+          </p>
+        </div>
+      </div>
+    </div>
+
+
 </div>
 
 
 
+    </div>
+
+</div>
 
 
 
+{% endblock %}
 <script>
 const cells = 31
 
 // From 0.001 to 100
 const items = [
-  {name: 'Алишка гей', img: "{% static 'base/images/random_cat/alishka.jpg' %}", chance: 70},
-  {name: 'Алишка жеский гей', img: "{% static 'base/images/random_cat/animeme1.png' %}", chance: 20},
-  {name: 'Алишка не гей', img: "{% static 'base/images/random_cat/alishka2.png' %}", chance: 10}
+  {name: 'Алишка гей', img: "{% static 'base/images/random_cat/alishka.jpg' %}", chance: 33},
+  {name: 'Алишка жеский гей', img: "{% static 'base/images/random_cat/animeme1.png' %}", chance: 33},
+  {name: 'Алишка не гей', img: "{% static 'base/images/random_cat/alishka2.png' %}", chance: 33},
+  {name: 'Алишка не гей', img: "{% static 'base/images/random_cat/pointer2.png' %}", chance: 1}
 ]
 
 function getItem() {
@@ -231,7 +319,7 @@ function start() {
 
 
 
-{% endblock %}
+
 
 {% include 'footer.html' %}
 
