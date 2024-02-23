@@ -71,7 +71,7 @@
                   Фигурки делают жизнь лучше и краше. Они дополняют недостатки и даже достатки любого дизайна. Каждый день они дарят счастье нашим клиентам и если ты еще не наш клиент, самое время им стать!
                </p>
                <a
-                  href="javascript:void(0)"
+                  href="{% url 'anime-category' %}"
                   class="inline-flex items-center justify-center py-3 text-base font-medium text-center text-white border border-transparent rounded-md px-7 bg-primary hover:bg-opacity-90"
                   >
                Каталог
@@ -82,7 +82,45 @@
    </div>
 </section>
 
- <!-- ====== ABOUT US SECTION END-->
+ <!-- ====== КОНЕЦ СЕКЦИИ О НАС-->
+
+ <!-- ====== СЕКЦИЯ ПЕРЕД ФУТЕРОМ -->
+
+<section id="delivery_id"
+   class="overflow-hidden pt-20 pb-12 lg:pt-[120px] lg:pb-[90px] bg-gray-2 dark:bg-dark"
+   >
+   <div class="container mx-auto">
+      <div class="flex flex-wrap items-center justify-center -mx-4">
+         <div class="w-full px-4 text-center">
+
+               <span class="block mb-4 text-lg font-semibold text-primary">
+               Могу ли я сделать заказ если я не живу в Москве?
+               </span>
+               <h2
+                  class="mb-5 text-3xl font-bold text-dark dark:text-white sm:text-[40px]/[48px]"
+                  >
+                  У нас доставка по всей России!
+               </h2>
+               <p class="mb-5 text-base text-body-color dark:text-dark-6">
+                  Рады сообщить, что мы осуществляем доставку по всей России! <br>
+                  При покупке аниме фигурок у нас вас ждут разнообразные варианты доставки.<br>
+                  Надежно и быстро доставим ваш заказ, где бы вы ни находились. <br>
+                  Узнайте больше о вариантах доставки прямо сейчас!
+
+
+               </p>
+               <p class="mb-8 text-base text-body-color dark:text-dark-6">
+                  В рандом-рулетке есть вероятность выйграть бесплатную доставку!<br>
+                  У нас работает СДЭК, ЯНДЕКС, Алишка...
+               </p>
+
+            </div>
+         </div>
+
+   </div>
+</section>
+
+
 {% include 'footer.html' %}
 
 {% endblock %}
