@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, Http404, HttpResponseNotFound
 from django.templatetags.static import static
+from django.views.generic import CreateView
 
 from base.models import Category, Product, ProductImage
 
@@ -100,3 +101,6 @@ def base_view(request):
         "title": "AniShop",
     }
     return render(request, 'base/base.html', context=data)
+
+
+

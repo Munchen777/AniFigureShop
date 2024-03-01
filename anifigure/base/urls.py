@@ -5,6 +5,7 @@ urlpatterns = [
     path("", views.base_view, name="main"),
 
 
+
     path("random-category/", views.random_category_view, name="random-category"),
 
     path("estetic-category/", views.estetic_category_view, name="estetic-category"),
