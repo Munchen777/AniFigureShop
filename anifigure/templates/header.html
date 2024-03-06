@@ -90,18 +90,34 @@
               </nav>
             </div>
             <div class="hidden justify-end pr-16 sm:flex lg:pr-0">
+           {% if user.is_authenticated %}
               <a
-                href="{% url 'main' %}"
+                href="{% url 'users:login' %}"
+                class="px-7 py-3 text-base font-medium text-dark hover:text-primary dark:text-white"
+              >
+                {{ user.username }}
+              </a>
+<!--              <a-->
+<!--                href="{% url 'users:logout' %}"-->
+<!--                class="rounded-md bg-primary px-7 py-3 text-base font-medium text-white hover:bg-primary/90"-->
+<!--              >-->
+<!--                Выйти-->
+<!--              </a>-->
+              {% else %}
+
+              <a
+                href="{% url 'users:login' %}"
                 class="px-7 py-3 text-base font-medium text-dark hover:text-primary dark:text-white"
               >
                 Вход
               </a>
               <a
-                href="{% url 'main' %}"
+                href="{% url 'users:registration' %}"
                 class="rounded-md bg-primary px-7 py-3 text-base font-medium text-white hover:bg-primary/90"
               >
                 Регистрация
               </a>
+              {% endif %}
             </div>
           </div>
         </div>
