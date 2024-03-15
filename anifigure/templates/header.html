@@ -11,6 +11,7 @@
   position: fixed;
   top: 0; /* Закрепить заголовок в самом верху страницы */
 
+
   z-index: 9999;
 }
 </style>
@@ -86,16 +87,14 @@
                       Акции
                     </a>
                   </li>
+
                 </ul>
               </nav>
             </div>
-            <div class="hidden justify-end pr-16 sm:flex lg:pr-0">
+            <div class="justify-end pr-16 sm:flex lg:pr-0">
            {% if user.is_authenticated %}
-              <a
-                href="{% url 'users:login' %}"
-                class="px-7 py-3 text-base font-medium text-dark hover:text-primary dark:text-white"
-              >
-                {{ user.username }}
+              <a href="{% url 'users:profile' %}" class="hidden sm:flex items-center justify-center px-7 py-3 text-base font-medium text-dark hover:text-primary dark:text-white">
+                    {{ user.username }}
               </a>
 <!--              <a-->
 <!--                href="{% url 'users:logout' %}"-->
@@ -103,6 +102,16 @@
 <!--              >-->
 <!--                Выйти-->
 <!--              </a>-->
+             <div class="w-50 max-w-40 px-4">
+            <a href="{% url 'main' %}"  class="block w-full py-5">
+              <img
+                src='{% static "base/images/shopping_cart/shoppingcart.png" %}'
+                alt="logo"
+                class=""
+                style="max-width: 40px"
+              />
+            </a>
+          </div>
               {% else %}
 
               <a
@@ -113,7 +122,7 @@
               </a>
               <a
                 href="{% url 'users:registration' %}"
-                class="rounded-md bg-primary px-7 py-3 text-base font-medium text-white hover:bg-primary/90"
+                class="hidden sm:flex rounded-md bg-primary px-7 py-3 text-base font-medium text-white hover:bg-primary/90"
               >
                 Регистрация
               </a>

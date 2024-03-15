@@ -39,3 +39,7 @@ def registration_user(request):
 
 def logout_user(request):
     return HttpResponseRedirect(reverse('users:login'))
+
+
+def profile_user(request):
+    return render(request, 'users/profile.html', context={})
