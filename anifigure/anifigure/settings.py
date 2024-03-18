@@ -82,8 +82,8 @@ WSGI_APPLICATION = 'anifigure.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'anifigureshop_db',
-        'USER': 'postgres',
+        'NAME': 'anishop',
+        'USER': 'anishop',
         'PASSWORD': 'root',
         'HOST': 'localhost',
         'PORT': '5432',
