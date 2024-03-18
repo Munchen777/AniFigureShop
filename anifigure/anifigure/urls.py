@@ -7,6 +7,7 @@ from base.views import page_not_found
 
 urlpatterns = [
     path("", include("base.urls")),
+    path("users/", include("users.urls", namespace="users")),
     path("admin/", admin.site.urls),
 ]
 
