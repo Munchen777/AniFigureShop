@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
 <div class="h-screen flex items-center justify-center bg-gray-400 dark:bg-gray-900">
     <!-- Container -->
     <div class="mx-auto">
@@ -10,18 +9,32 @@
             <div class="w-full  flex">
 
                 <!-- Col -->
-                <div class="w-full h-auto bg-gray-400 dark:bg-gray-800 hidden lg:block lg:w-5/12 bg-cover rounded-l-lg"
+                <div class="w-full bg-gray-400 dark:bg-gray-800 bg-contain bg-no-repeat rounded-l-lg lg:min-w-[324px]"
                     style="background-image: url('https://source.unsplash.com/Mv9hjnEUHR4/600x800')"></div>
 
                 <!-- Col -->
-                <div class="w-full lg:w-7/12 bg-white dark:bg-gray-700 p-5 rounded-lg lg:rounded-l-none">
-                    <h3 class="py-4 text-2xl text-center text-gray-800 dark:text-white">Авторизация</h3>
+                <div class="w-full bg-white dark:bg-gray-700 p-5 rounded-lg lg:rounded-l-none">
+                    <h3 class="py-4 text-2xl text-center text-gray-800 dark:text-white">Регистрация</h3>
                     <form method="post" class="px-8 pt-6 pb-8 mb-4 bg-white dark:bg-gray-800 rounded">
                         {% csrf_token %}
-                        {% for f in form %}
-                        {{ f }}
-                        {% endfor %}
-                        <br>
+
+                        <div class="border-black border-b-2 my-6">
+                            {{ form.username }}
+                        </div>
+                        <div class="border-black border-b-2 my-6">
+                            {{ form.email }}
+                        </div>
+                        <div class="border-black border-b-2 my-6">
+
+                            {{ form.password1 }}
+                        </div>
+                        <div class="border-black border-b-2 my-6">
+
+                            {{ form.password2 }}
+
+                        </div>
+
+
                         {% if form.errors %}
                             <div class="text-red-500 text-sm mt-2">
                                 {% for field, error_list in form.errors.items %}
