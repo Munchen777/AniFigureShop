@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
 
 <div class="h-screen flex items-center justify-center bg-gray-400 dark:bg-gray-900">
@@ -10,8 +10,7 @@
             <div class="w-full  flex">
 
                 <!-- Col -->
-                <div class="w-full h-auto bg-gray-400 dark:bg-gray-800 hidden lg:block lg:w-5/12 bg-cover rounded-l-lg"
-                    style="background-image: url('https://source.unsplash.com/Mv9hjnEUHR4/600x800')"></div>
+                 <img src="{% static 'base/images/profile_image/p1.jpg' %}" class="lg:max-w-[600px] lg:block sm:hidden">
 
                 <!-- Col -->
                 <div class="w-full lg:w-7/12 bg-white dark:bg-gray-700 p-5 rounded-lg lg:rounded-l-none">
@@ -19,7 +18,8 @@
                     <form method="post" class="px-8 pt-6 pb-8 mb-4 bg-white dark:bg-gray-800 rounded">
                         {% csrf_token %}
                         {% for f in form %}
-                        {{ f }}
+                        <div class="mt-5">{{ f }}</div>
+
                         {% endfor %}
                         <br>
                         {% if form.errors %}
@@ -31,7 +31,8 @@
                                 {% endfor %}
                             </div>
                         {% endif %}
-                        <p><button type="submit" class="w-full px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700 dark:bg-blue-700 dark:text-white dark:hover:bg-blue-900 focus:outline-none focus:shadow-outline">Войти</button></p>
+                        <p><button type="submit" class="w-full mt-5 px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700 dark:bg-blue-700 dark:text-white dark:hover:bg-blue-900 focus:outline-none focus:shadow-outline">Войти</button></p>
+                        <div class="px-8 pt-6 pb-8 mb-4 text-center rounded"><a href="{% url 'users:registration' %}" class="">Регистрация</a></div>
                     </form>
                 </div>
             </div>

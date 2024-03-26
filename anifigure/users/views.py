@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
@@ -27,9 +27,8 @@ class RegisterUser(CreateView):
 
 
 def logout_user(request):
-    form = RegisterForm()
-
-    return render(request, 'users/register.html', {'form': form})
+    logout(request)
+    return redirect("users:login")
 
 
 def profile_user(request):
