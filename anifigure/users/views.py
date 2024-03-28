@@ -6,28 +6,35 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from users.forms import LoginUserForm, RegisterForm
-
+from django.contrib import messages
 
 class LoginUser(LoginView):
     form_class = LoginUserForm
     template_name = 'users/login.html'
-    extra_context = {'title':'Авторизация'}
+    extra_context = {'title': 'Авторизация'}
 
     # def get_success_url(self):
     #     return reverse_lazy('main')
 
+
 def registration_user(request):
-    if request.method == 'GET':
-        form = RegisterForm()
-        return render(request, 'users/register.html', { 'form': form})
+    if request.method == "POST":
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            messages.success(request, "Registration successful.")
+            return redirect("main:homepage")
+        messages.error(request, "Unsuccessful registration. Invalid information.")
+    form = RegisterForm()
+    return render(request=request, template_name="users/register.html", context={"form": form})
+
 
 
 def logout_user(request):
-
     form = RegisterForm()
 
-    return render(request, 'users/register.html', { 'form': form})
-
+    return render(request, 'users/register.html', {'form': form})
 
 
 def profile_user(request):
