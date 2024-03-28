@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+
 app_name = 'users'
 
 urlpatterns = [
@@ -8,6 +9,7 @@ urlpatterns = [
     path("registration/", views.RegisterUser.as_view(), name="registration"),
     path("profile/", views.profile_user, name="profile"),
 
+    path("cart/", views.cart_items, name="cart"),
 
 ]
 

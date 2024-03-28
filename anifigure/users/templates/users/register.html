@@ -39,7 +39,7 @@
                             <div class="text-red-500 text-sm mt-2">
                                 {% for field, error_list in form.errors.items %}
                                     {% for error in error_list %}
-                                        {{ error }}
+                                        {{ error }}<br>
                                     {% endfor %}
                                 {% endfor %}
                             </div>

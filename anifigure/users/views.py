@@ -7,6 +7,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView
 
+from users.models import CartItem
 from users.forms import LoginUserForm, RegisterForm
 
 
@@ -31,5 +32,14 @@ def logout_user(request):
     return redirect("users:login")
 
 
+def cart_items(request):
+    user = request.user  # Получаем текущего пользователя
+    cart_items = CartItem.objects.filter(
+        user=user)  # Получаем все записи из таблицы CartItem, относящиеся к данному пользователю
+
+    return render(request, 'users/cart.html', {'cart_items': cart_items,
+                                               'title': "Корзина"})
+
+
 def profile_user(request):
-    return render(request, 'users/profile.html', context={})
+    return render(request, 'users/profile.html', context={"title": "Профиль"})
