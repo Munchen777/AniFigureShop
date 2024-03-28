@@ -38,8 +38,8 @@ INSTALLED_APPS = [
 
     'django_extensions',
 
-    'base',
-    'users',
+    'base.apps.BaseConfig',
+    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
@@ -128,7 +128,9 @@ MEDIA_URL = '/images/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
+# перенаправление после успешной аутентификации
 LOGIN_REDIRECT_URL = "main"
+# после логаута перенаправление на main
 LOGOUT_REDIRECT_URL = "main"
+# при аутентификации 
 LOGIN_URL = "users:login"
