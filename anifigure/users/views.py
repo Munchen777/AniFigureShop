@@ -1,12 +1,14 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
+from django.views.generic import CreateView
+
 from users.forms import LoginUserForm, RegisterForm
-from django.contrib import messages
+
 
 class LoginUser(LoginView):
     form_class = LoginUserForm
@@ -17,24 +19,16 @@ class LoginUser(LoginView):
     #     return reverse_lazy('main')
 
 
-def registration_user(request):
-    if request.method == "POST":
-        form = RegisterForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            messages.success(request, "Registration successful.")
-            return redirect("main:homepage")
-        messages.error(request, "Unsuccessful registration. Invalid information.")
-    form = RegisterForm()
-    return render(request=request, template_name="users/register.html", context={"form": form})
-
+class RegisterUser(CreateView):
+    form_class = RegisterForm
+    template_name = 'users/register.html'
+    extra_context = {'title': 'Регистрация'}
+    success_url = reverse_lazy('users:login')
 
 
 def logout_user(request):
-    form = RegisterForm()
-
-    return render(request, 'users/register.html', {'form': form})
+    logout(request)
+    return redirect("users:login")
 
 
 def profile_user(request):
