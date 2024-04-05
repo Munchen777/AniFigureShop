@@ -41,6 +41,7 @@
                         document.getElementById('mainImage').src = imageUrl;
                     }
                 </script>
+
                 <div class="w-full px-4 md:w-1/2 mt-20">
                     <div class="lg:pl-20">
                         <div class="mb-8 ">
@@ -128,11 +129,13 @@
                         </div>
                         <div class="flex flex-wrap items-center -mx-4 ">
                             <div class="w-full px-4 mb-4 lg:w-1/2 lg:mb-0">
-
+                             <form action="{% url 'add_to_cart' product.id %}" method="post">
+                                 {% csrf_token %}
                                 <button
                                     class="flex items-center justify-center w-full p-4 text-blue-500 border border-blue-500 rounded-md dark:text-gray-200 dark:border-blue-600 hover:bg-blue-600 hover:border-blue-600 hover:text-gray-100 dark:bg-blue-600 dark:hover:bg-blue-700 dark:hover:border-blue-700 dark:hover:text-gray-300">
                                     В корзину
                                 </button>
+                                 </form>
                             </div>
                             <div class="w-full px-4 mb-4 lg:mb-0 lg:w-1/2">
                                 <button
@@ -143,6 +146,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
             <h1 class="max-w-xl mt-2 mb-6 text-2xl font-bold dark:text-gray-400 md:text-4xl">Похожие товары:</h1>
         </div>

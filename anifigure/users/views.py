@@ -7,8 +7,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView
 
+from base.models import Product
 from users.models import CartItem
 from users.forms import LoginUserForm, RegisterForm
+
 
 # Class-Based View для аутентификации пользователя
 class LoginUser(LoginView):
@@ -25,6 +27,8 @@ class RegisterUser(CreateView):
     template_name = 'users/register.html'
     extra_context = {'title': 'Регистрация'}
     success_url = reverse_lazy('users:login')
+
+
 
 
 def logout_user(request):

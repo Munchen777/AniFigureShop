@@ -1,9 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404, HttpResponseNotFound
 from django.templatetags.static import static
 from django.views.generic import CreateView
 
 from base.models import Category, Product, ProductImage
+from users.models import CartItem
 
 
 def page_not_found(request, exception):
@@ -103,4 +104,13 @@ def base_view(request):
     return render(request, 'base/base.html', context=data)
 
 
+def add_to_cart(request, product_id):
+    if request.user.is_authenticated:
+        user = request.user
+        product = Product.objects.get(id=product_id)
 
+        # Создаем запись в корзине
+        cart_item = CartItem(user=user, product=product, quantity=1)
+        cart_item.save()
+
+    return redirect('users:cart')

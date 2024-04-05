@@ -49,19 +49,30 @@
                 <p class="pt-8 text-sm">Попыток кручения рулетки: {}</p>
 
                 <div class="pt-12 pb-4">
-                    <button class="bg-blue-700 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded-full">
+
+                    <button onclick="redirect_to_cart()" class="bg-blue-700 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded-full">
 				         Корзина
 				     </button>
+
                 </div>
 
                 <!-- Use https://simpleicons.org/ to find the svg for your preferred product -->
                 <div class="pt-4 pb-8">
-                     <a href="{% url 'users:logout' %}">
-                    <button class="bg-red-700 hover:bg-red-900 text-white font-bold py-2 px-4 rounded-full">
+
+                    <button onclick="redirect_to_logout()" class="bg-red-700 hover:bg-red-900 text-white font-bold py-2 px-4 rounded-full">
 				         Выйти
 				     </button>
-                     </a>
+
                 </div>
+<!--         Функция чтобы не вешать ссылку выше кнопки (чисто ради того чтобы при наведении на кнопку не показывалось ничего в левом нижнем углу -->
+                <script>
+                    function redirect_to_cart() {
+                        window.location.href = "{% url 'users:cart' %}"; // Замените на соответсвующий URL вашей страницы
+                    }
+                    function redirect_to_logout() {
+                        window.location.href = "{% url 'users:logout' %}"; // Замените на соответсвующий URL вашей страницы
+                    }
+                </script>
 
             </div>
 

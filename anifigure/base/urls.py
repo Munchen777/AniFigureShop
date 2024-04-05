@@ -16,6 +16,8 @@ urlpatterns = [
     path("anime-category/<slug:category_slug>/", views.anime_category_products_view, name="anime-baby-category"),
     path("anime-category/<slug:category_slug>/<slug:product_slug>", views.anime_products_view, name="anime-product"),
 
+    path('add-to-cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
+
 
 
 ]
