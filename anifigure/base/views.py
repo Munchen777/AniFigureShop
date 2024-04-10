@@ -110,7 +110,6 @@ def add_to_cart(request, product_id):
         product = Product.objects.get(id=product_id)
 
         # Создаем запись в корзине
-        cart_item = CartItem(user=user, product=product, quantity=1)
-        cart_item.save()
+        cart_item = CartItem.add_to_cart(user=user, product=product, quantity=1)
 
     return redirect('users:cart')

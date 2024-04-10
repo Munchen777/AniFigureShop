@@ -62,20 +62,3 @@ class Order(models.Model):
         return f"Order: {self.pk}\nUser: {self.user.username}"
 
 
-# class User(models.Model):
-#     email = models.EmailField(unique=True)
-#     password = models.CharField(max_length=100)
-#
-#     def __str__(self):
-#         return self.email
-#
-#
-# class ShoppingCart(models.Model):
-#     user = models.OneToOneField(User, on_delete=models.CASCADE)
-#     products = models.ManyToManyField(Product, through='CartProduct')
-#
-#
-# class CartProduct(models.Model):
-#     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-#     shopping_cart = models.ForeignKey(ShoppingCart, on_delete=models.CASCADE)
-#     quantity = models.PositiveIntegerField(default=1)
