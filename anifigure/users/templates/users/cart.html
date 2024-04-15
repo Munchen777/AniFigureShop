@@ -8,19 +8,36 @@
 {% block content %}
 
 {% include 'header.html' %}
+<style>
+.start {
 
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  background: #343333;
+  color: #e0e0e0;
+  font-size: 16px;
+  font-weight: 500;
+  transition: opacity 0.2s ease;
+  box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.65);
+  cursor: pointer;
+}
+.start:hover {
+  opacity: 0.8;
+}/*# sourceMappingURL=style.css.map */
+</style>
 <body class="font-sans antialiased text-gray-900 leading-normal tracking-wider bg-cover bg-gray-3">
 
-    <div class="flex items-center lg:min-h-60vh flex-wrap mx-auto my-32 lg:my-0" style="min-height: 70vh;">
+    <div class="flex items-center lg:min-h-60vh flex-wrap mx-auto my-32 lg:my-0" style="min-height: 65vh;">
         <!-- Тут будут твои товары -->
         <div class="mx-auto bg-white rounded-lg shadow-lg p-6">
     <h2 class="text-3xl text-gray-800 font-semibold mb-4">Ваши товары:</h2>
     <div class="flex justify-center flex-wrap">
         {% for item in cart_items_with_product_info %}
-    <div class="m-4">
+    <div class="m-4 min-w-48">
         <p class="text-xl text-gray-800 font-semibold mb-4">{{ item.cart_item.quantity }} x {{ item.product.name }}</p>
             {% if item.product_images %} <!-- Проверка на наличие изображения для товара -->
-            <a href="{% url 'anime-product' category_slug=item.product.category.slug product_slug=item.product.slug %}"><img src="{{ item.product_images.0.image.url }}" alt="{{ item.product.name }}" class="mt-5 w-96 h-96 border-b-2 drop-shadow-xl rounded-[10px]"></a>
+            <a href="{% url 'anime-product' category_slug=item.product.category.slug product_slug=item.product.slug %}"><img src="{{ item.product_images.0.image.url }}" alt="{{ item.product.name }}" class="mt-5 xl:w-64 xl:h-64 lg:w-52 lg:h-52 w-40 h-40 border-b-2 drop-shadow-xl rounded-[10px]"></a>
             {% endif %}
         </div>
             {% empty %}
@@ -31,7 +48,7 @@
 
 </div>
 <div class="flex justify-center items-center mb-40">
-    <button class="bg-black text-white font-bold py-4 px-8 rounded focus:outline-none hover:bg-gray-2 hover:text-black">Оформить заказ</button>
+    <button class="font-bold py-4 px-8 rounded start text-white">Оформить заказ</button>
 </div>
 
 </body>

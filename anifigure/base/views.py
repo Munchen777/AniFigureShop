@@ -1,8 +1,10 @@
+import json
+
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404, HttpResponseNotFound
 from django.templatetags.static import static
 from django.views.generic import CreateView
-
+from django.http import JsonResponse
 from base.models import Category, Product, ProductImage
 from users.models import CartItem
 
@@ -113,3 +115,14 @@ def add_to_cart(request, product_id):
         cart_item = CartItem.add_to_cart(user=user, product=product, quantity=1)
 
     return redirect('users:cart')
+
+
+def save_roulette_bonus(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        # Тут можно сохранить данные в базу данных, используя Django ORM
+        # Например:
+        # Модель.objects.create(field=data)
+        print(data)
+        return JsonResponse({'status': 'Data saved successfully'})
+    return JsonResponse({'status': 'Invalid request'}, status=400)

@@ -177,7 +177,7 @@
         <img src="{% static 'base/images/random_cat/alishka.jpg' %}" alt="image" class="w-full max-w-[400px]">
         <div class="p-8 text-center sm:p-9 md:p-7 xl:p-9">
           <h3 class="mb-4 block text-xl font-semibold text-dark hover:text-primary dark:text-white sm:text-[22px] md:text-xl lg:text-[22px] xl:text-xl 2xl:text-[22px]">
-            Алишка
+            Скидка
           </h3>
           <p class="mb-7 text-base leading-relaxed text-body-color dark:text-dark-6">
             Скидка 10% на всё
@@ -192,7 +192,7 @@
         <img src="{% static 'base/images/random_cat/alishka.jpg' %}" alt="image" class="w-full max-w-[400px]">
         <div class="p-8 text-center sm:p-9 md:p-7 xl:p-9">
           <h3 class="mb-4 block text-xl font-semibold text-dark hover:text-primary dark:text-white sm:text-[22px] md:text-xl lg:text-[22px] xl:text-xl 2xl:text-[22px]">
-            АлишкаX20
+            СкидкаX20
           </h3>
           <p class="mb-7 text-base leading-relaxed text-body-color dark:text-dark-6">
             Скидка 20% на всё
@@ -207,7 +207,7 @@
         <img src="{% static 'base/images/random_cat/alishka.jpg' %}" alt="image" class="w-full max-w-[400px]">
         <div class="p-8 text-center sm:p-9 md:p-7 xl:p-9">
           <h3 class="mb-4 block text-xl font-semibold text-dark hover:text-primary dark:text-white sm:text-[22px] md:text-xl lg:text-[22px] xl:text-xl 2xl:text-[22px]">
-            АлишкаX30
+            СкидкаX30
           </h3>
           <p class="mb-7 text-base leading-relaxed text-body-color dark:text-dark-6">
             Скидка 30% на всё
@@ -219,7 +219,7 @@
     <!-- ====== Fourth block -->
     <div class="w-1/2 px-4 md:w-1/2 xl:w-1/4 lg:w-1/6">
       <div class="mb-10 overflow-hidden rounded-lg bg-white shadow-1 duration-300 hover:shadow-3 dark:bg-dark-2 dark:shadow-card dark:hover:shadow-3 w-full max-w-[400px]">
-        <img src="{% static 'base/images/random_cat/alishka2.png' %}" alt="image" class="w-full max-w-[400px]">
+        <img src="{% static 'base/images/random_cat/figurka.jpg' %}" alt="image" class="w-full max-w-[400px]">
         <div class="p-8 text-center sm:p-9 md:p-7 xl:p-9">
           <h3 class="mb-4 block text-xl font-semibold text-dark hover:text-primary dark:text-white sm:text-[22px] md:text-xl lg:text-[22px] xl:text-xl 2xl:text-[22px]">
             Фигурка
@@ -234,7 +234,7 @@
     <!-- ====== Fiveth block -->
     <div class="w-1/2 px-4 md:w-1/2 xl:w-1/4 lg:w-1/6">
       <div class="mb-10 overflow-hidden rounded-lg bg-white shadow-1 duration-300 hover:shadow-3 dark:bg-dark-2 dark:shadow-card dark:hover:shadow-3 w-full max-w-[400px]">
-        <img src="{% static 'base/images/random_cat/alishka2.png' %}" alt="image" class="w-full max-w-[400px]">
+        <img src="{% static 'base/images/random_cat/bigfigurka.jpg' %}" alt="image" class="w-full max-w-[400px]">
         <div class="p-8 text-center sm:p-9 md:p-7 xl:p-9">
           <h3 class="mb-4 block text-xl font-semibold text-dark hover:text-primary dark:text-white sm:text-[22px] md:text-xl lg:text-[22px] xl:text-xl 2xl:text-[22px]">
             ФигуркаX5
@@ -263,10 +263,11 @@ const cells = 31
 
 // From 0.001 to 100
 const items = [
-  {name: 'Алишка гей', img: "{% static 'base/images/random_cat/alishka.jpg' %}", chance: 33},
-  {name: 'Алишка жеский гей', img: "{% static 'base/images/random_cat/animeme1.png' %}", chance: 33},
-  {name: 'Алишка не гей', img: "{% static 'base/images/random_cat/alishka2.png' %}", chance: 33},
-  {name: 'Алишка не гей', img: "{% static 'base/images/random_cat/pointer2.png' %}", chance: 1}
+  {name: 'Скидка', img: "{% static 'base/images/random_cat/alishka.jpg' %}", chance: 43},
+  {name: 'СкидкаX20', img: "{% static 'base/images/random_cat/alishka.jpg' %}", chance: 32},
+  {name: 'СкидкаX30', img: "{% static 'base/images/random_cat/alishka.jpg' %}", chance: 15},
+  {name: 'Фигурка', img: "{% static 'base/images/random_cat/figurka.jpg' %}", chance: 7},
+  {name: 'Фигурка', img: "{% static 'base/images/random_cat/bigfigurka.jpg' %}", chance: 3}
 ]
 
 function getItem() {
@@ -326,9 +327,24 @@ function start() {
   list.addEventListener('transitionend', () => {
     isStarted = false
     item.classList.add('active')
-    const data = JSON.parse(item.getAttribute('data-item'))
 
-    console.log(data); //ВОТ ТУТ ЛОГИКА С ВЫПАДАЮЩИМ ПРЕДМЕТОМ ДОЛЖНА БЫТЬ
+    const data = JSON.parse(item.getAttribute('data-item'));
+    console.log(data); //выводит словарь {"f":"ff"}
+
+    // тут написан AJAX запрос в наш сервер чтобы сохранить выпавший в рулетке бонус
+    fetch('save_bonus/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': "{{ csrf_token }}",
+      },
+      body: JSON.stringify(data),
+    })
+    // .then(response => response.json())
+    // .then(data => console.log(data))
+    // .catch(error => console.error('Error:', error));
+
+
   }, {once: true})
 }
 

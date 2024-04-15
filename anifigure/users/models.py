@@ -22,3 +22,5 @@ class CartItem(models.Model):
         else:
             new_item = cls(user=user, product=product, quantity=quantity)
             new_item.save()
+
+
