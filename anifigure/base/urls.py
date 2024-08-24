@@ -1,10 +1,12 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 
+
+app_name = "base"
+
+
 urlpatterns = [
-    path("", views.base_view, name="main"),
-
-
+    path("", views.base_view, name="index"),
 
     path("random-category/", views.random_category_view, name="random-category"),
     path('random-category/save_bonus/', views.save_roulette_bonus, name='save_roulette_bonus'),
@@ -19,9 +21,9 @@ urlpatterns = [
 
     path('add-to-cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
 
-
-
-
+    path("create-order/", views.create_order, name="create-order"),
+    
+    path("all-products/", views.all_products_view, name="all-products"),
+    path("all-products/get-products/<str:category_slug>/", views.ajax_selected_products_view, name="ajax_selected_products_view"),
 
 ]
-
