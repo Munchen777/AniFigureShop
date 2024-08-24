@@ -1,14 +1,14 @@
 
 {% load static %}
 
-<link rel="stylesheet" href="{% static 'base/css/tailwind.css' %}"/>
+<!-- <link rel="stylesheet" href="{% static 'base/css/tailwind.css' %}"/> -->
+<link rel="stylesheet" href="{% static 'base/css/output.css' %}"/>
 
 
 
 
 <style>
  header {
-  position: fixed;
   top: 0; /* Закрепить заголовок в самом верху страницы */
 
 
@@ -25,10 +25,10 @@
       "
       class="flex w-full items-center bg-white dark:bg-dark"
     >
-      <div class="container mx-auto">
+      <div class="container mx-auto mb-10">
         <div class="relative -mx-4 flex items-center justify-between">
           <div class="w-60 max-w-full px-4">
-            <a href="{% url 'main' %}"  onclick="document.getElementById('header_id').scrollIntoView({ behavior: 'smooth' });" class="block w-full py-5">
+            <a href="{% url 'index' %}"  onclick="document.getElementById('header_id').scrollIntoView({ behavior: 'smooth' });" class="block w-full py-5">
               <img
                 src='{% static "base/images/logo/logo.svg" %}'
                 alt="logo"
@@ -66,7 +66,7 @@
               >
                 <ul class="block lg:flex">
                   <li>
-                     <a href="{% url 'main' %}"
+                     <a href="{% url 'index' %}"
                       class="flex py-2 text-base font-medium text-body-color hover:text-dark dark:text-dark-6 dark:hover:text-white lg:ml-12 lg:inline-flex"
                     >
                       Главная
@@ -74,7 +74,7 @@
                   </li>
                   <li>
                     <a
-                      href="{% url 'main' %}.#about_id"
+                      href="{% url 'index' %}.#about_id"
                       class="flex py-2 text-base font-medium text-body-color hover:text-dark dark:text-dark-6 dark:hover:text-white lg:ml-12 lg:inline-flex"
                     >
                       О нас
@@ -129,9 +129,27 @@
               </a>
               {% endif %}
             </div>
+            
+            <!-- <button id="toggleDark" class="text-blue-900 px-4 py-2 text-sm font-medium mt-8 bg-blue-100 rounded-md" onclick="document.head.classList.toggle('dark')">
+              Toggle Dark Mode
+            </button> -->
           </div>
         </div>
       </div>
+      <!-- <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", () => {
+          const toggleDark = document.getElementById('toggleDark')
+          toggleDark.addEventListener('click', function() {
+            if (document.documentElement.classList.includes('dark')) {
+              document.documentElement.classList.remove('dark')
+            }
+            else {
+              document.documentElement.classList.add('dark')
+            }
+            alert('click!')
+          });
+        });
+      </script> -->
     </header>
     <!-- ====== Navbar Section End -->
 
