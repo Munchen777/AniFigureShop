@@ -48,7 +48,11 @@
 
 </div>
 <div class="flex justify-center items-center mb-40">
-    <button class="font-bold py-4 px-8 rounded start text-white">Оформить заказ</button>
+    <button class="font-bold py-4 px-8 rounded start text-white">
+        <a href="{% url 'create-order' %}">
+            Оформить заказ
+        </a>
+    </button>
 </div>
 
 </body>
