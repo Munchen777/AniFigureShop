@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+    {% include 'header.html' %}
+    
+    <div class="container mx-auto mt-40">
+        <div class="grid grid-cols-3 gap-x-7">
+            <aside class="">
+                <div>
+                    <h3 class="font-serif border-b-2 text-2xl">Фильтры</h3>
+                </div>
+                    {% csrf_token %}
+
+                    <div class="pt-10">
+
+                        {% for category in categories %}
+                            <p>{{ category.slug }}</p>
+                            <!-- <input type="checkbox" name="category" class="form-check-input" id="select_category" onclick="getCategory()" value="{{ category.name }}"> -->
+                            <input type="checkbox" name="category" class="form-check-input" id="select_category" onclick="getCategory()" value="{{ category.pk }}">
+                            <label class="form-check-label" for="select_category">{{ category.name }}</label>
+                        {% endfor %}
+                    </div>
+                <div id="products_container"></div>
+                    
+            </aside>
+            {% for product in products %}
+                <div class="flex flex-wrap space-y-2" id="productsContainer">
+                    <div class="w-full h-[390px]">
+                        <div>
+                            <a href="#">
+                                <h3 class="font-semibold">
+                                    Название {{ product.name }}
+                                </h3>
+                            </a>
+                        </div>
+                        <div class="">
+                            <h4>
+                                Описание товара: {{ product.description }}
+                            </h4>
+                        </div>
+                        <div>
+                            {{ product.price }}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+ 
+    {% include 'footer.html' %}
+    <script>
+        window.onload = async function() {
+            const products = JSON.stringify(("{{ products|escapejs }}"))
+            await displayAllProducts(products)
+        }
+    </script>
+    <script src="{% static 'base/js/my.js' %}"></script>
+
+{% endblock content %}
+    
