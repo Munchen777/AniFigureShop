@@ -3,7 +3,7 @@ from rest_framework import routers
 
 
 from .views import ProductsViewSet, CategoryViewSet
-from carts.views import CreateCartAPIView
+from carts.views import CartAddAPIView
 
 
 app_name = "api"
@@ -15,7 +15,7 @@ router.register("categories", CategoryViewSet, basename="categories-api")
 
 
 urlpatterns = [
-    path("carts/purchase/", CreateCartAPIView.as_view()),
+    path("carts/purchase/", CartAddAPIView.as_view()),
 ]
 
 urlpatterns += router.urls
