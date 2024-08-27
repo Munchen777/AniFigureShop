@@ -25,67 +25,39 @@ const ProductsComponent = () => {
 
     const [quantity, setQuantity] = useState(0);
 
-    // const updateCart = async (product, newQuantity) => {
-    //   try {
-    //     const response = await axios.post(`${ROOT_API}/api/carts/purchase/`, {
-    //       product: {...product},
-    //       quantity: newQuantity,
-    //     });
-    //     console.log('Purchase response:', response.data)
 
-    //   } catch (error) {
-    //     console.log('Error while sending post request to /api/purchase/', error)
-    //   }
-    // }
+    const handlePurchase = async (product, updatedQuantity) => {
+      setQuantity(updatedQuantity)
+
+      try {
+        const access_token = localStorage.getItem("access")
+        console.log(access_token)
+        const response = await makeRequest(`${ROOT_API}/api/carts/purchase/`, "POST", {
+          product: product,
+          quantity: updatedQuantity,
+        }, {
+          Authorization: `Bearer ${access_token}`
+        })
+        console.log('Purchase response:', response);
+
+      } catch (error) {
+        console.log('Error while sending post request to /api/purchase/', error);
+      }
+    }
 
     const handleBuyClick = async (product) => {
       const updatedQuantity = 1
-      setQuantity(updatedQuantity);
-
-      try {
-        const response = await axios.post(`${ROOT_API}/api/carts/purchase/`, {
-          product: {...product},
-          quantity: updatedQuantity,
-        });
-        console.log('Purchase response:', response.data)
-
-      } catch (error) {
-        console.log('Error while sending post request to /api/purchase/', error)
-      }
+      handlePurchase(product, updatedQuantity)
     };
   
     const handleIncrement = async (product) => {
       const updatedQuantity = quantity + 1
-      setQuantity(updatedQuantity);
-
-      console.log("увеличиваем кол-во", quantity)
-      try {
-        const response = await axios.post(`${ROOT_API}/api/carts/purchase/`, {
-          product: {...product},
-          quantity: updatedQuantity,
-        });
-        console.log('Purchase response:', response.data)
-
-      } catch (error) {
-        console.log('Error while sending post request to /api/purchase/', error)
-      }
+      handlePurchase(product, updatedQuantity)
     };
 
     const handleDecrement = async (product) => {
       const updatedQuantity = quantity > 1 ? quantity - 1 : 0
-      setQuantity(updatedQuantity);
-
-      console.log("уменьшаем кол-во", quantity)
-      try {
-        const response = await axios.post(`${ROOT_API}/api/carts/purchase/`, {
-          product: {...product},
-          quantity: updatedQuantity,
-        });
-        console.log('Purchase response:', response.data)
-
-      } catch (error) {
-        console.log('Error while sending post request to /api/purchase/', error)
-      }
+      handlePurchase(product, updatedQuantity)
     };
 
     useEffect(() => {
