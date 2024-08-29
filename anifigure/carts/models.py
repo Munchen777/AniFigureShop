@@ -18,9 +18,9 @@ class CartQueryset(models.QuerySet):
 
 class Cart(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True, verbose_name="User")
-    # product = models.ForeignKey(to=Product, on_delete=models.CASCADE, verbose_name="Product", related_name="cart")
+    product = models.ForeignKey(to=Product, on_delete=models.CASCADE, blank=True, null=True, verbose_name="Product", related_name="cart")
     quantity = models.PositiveIntegerField(default=0, verbose_name="Quantity")
-    session_key = models.CharField(max_length=35, null=True, blank=True)
+    # session_key = models.CharField(max_length=35, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="The date of adding")
 
     class Meta:
@@ -33,11 +33,11 @@ class Cart(models.Model):
     def products_price(self):
         return round(self.product.sell_price() * self.quantity, 2)
 
-    def __str__(self) -> str:
-        if self.user:
-            return f"Корзина {self.user.username} | Товар {self.product.name if self.product else ""} | Количество {self.quantity}"
+    # def __str__(self) -> str:
+    #     if self.user:
+    #         return f"Корзина {self.user.username} | Количество {self.quantity}" # Товар {self.product.name if self.product else ""}
 
-        return f"Анонимная корзина | Товар {self.product.name if self.product else ""} | Количество {self.quantity}"
+    #     return f"Анонимная корзина | Количество {self.quantity}" # Товар {self.product.name if self.product else ""}
 
 
 class CartItem(models.Model):
@@ -47,5 +47,5 @@ class CartItem(models.Model):
     created_at = models.DateTimeField(verbose_name="Cart item created at", auto_now_add=True)
     quantity = models.PositiveIntegerField(default=1)
 
-    def __str__(self):
-        return f"Корзина {self.cart.user.username if self.cart.user else "anonymous user"} | Товар {self.product.name if self.product else ""} | Количество {self.quantity}"
+    # def __str__(self):
+    #     return f"Корзина {self.cart.user.username if self.cart.user else "anonymous user"} | Товар {self.product.name if self.product else ""} | Количество {self.quantity}"
