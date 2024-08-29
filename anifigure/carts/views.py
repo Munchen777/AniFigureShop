@@ -10,12 +10,13 @@ from rest_framework.permissions import AllowAny
 from products.serializers import ProductSerializer
 from products.models import Product
 from orders.models import OrderItem
-from .cart import Cart
+from .cart import _Cart
 from .mixins import CartMixin
 from .serializers import CartSerializer, CartItemSerializer
 
 
 class CartAddAPIView(APIView, CartMixin):
+    authentication_classes = []
     permission_classes = [AllowAny]
     def post(self, request: Request) -> Response:
         print("сработал метод post")
@@ -28,16 +29,16 @@ class CartAddAPIView(APIView, CartMixin):
         # print(serializer.validated_data)
         # product_id = str(product_serializer.validated_data["pk"])
 
-        cart = Cart(request)
+        cart = _Cart(request)
         cart_with_products = cart.add(product_serializer, quantity)
-
+        print(f"{cart.cart=}")
 
         # # Находим товар в БД
         # try:
         #     product = Product.objects.get(pk=product_id)
         # except Product.DoesNotExist:
         #     return Response({"error": "Product not found"}, status=status.HTTP_404_NOT_FOUND)
-
+        print(f"{cart_with_products=}")
         cart_items = [
             {
              "product": val["product"],
