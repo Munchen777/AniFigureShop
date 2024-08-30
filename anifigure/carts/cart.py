@@ -46,15 +46,15 @@ class _Cart:
                 print(f"Текущая корзина пользователя: {cart=}")
                 self.save_db(cart, self.user)
 
-            self.queryset = Cart.objects.filter(user=self.user)
-            cart = self.get_cart_from_db(self.queryset)
+            self.queryset = Cart.objects.filter(user=self.user) # Находим корзину пользователя
+            cart = self.get_cart_from_db(self.queryset) # Находим корзину в бд
 
         else:
             if not cart:
                 # save an empty cart in session
                 cart = self.session[settings.CART_SESSION_ID] = {}
             print(f"Текущая корзина анонима: {cart}")
-
+        print(self.use_db)
         self.cart = cart
 
     def get_cart_from_db(self, qs):
@@ -67,9 +67,11 @@ class _Cart:
         return cart
 
     def save(self):
+        print("сработал метод save")
         if not self.use_db:
             self.session[settings.CART_SESSION_ID] = self.cart
             self.session.modified = True
+            print("сессия модифицирована: ", self.session[settings.CART_SESSION_ID])
 
     def save_db(self, cart: dict, user):
         print("сработал метод save_db")
@@ -102,9 +104,9 @@ class _Cart:
     def add(self,
             product_serializer: ProductSerializer,
             quantity: int = 1,
-            update_quantity: bool = True
+            update_quantity: bool = False
             ):
-        print("срботал метод add")
+        # Получаем продукт
         product_pk = product_serializer.data["pk"]
         product = Product.objects.get(pk=product_pk)
 
@@ -120,7 +122,7 @@ class _Cart:
                     # price=product.price
                 )
 
-            if update_quantity:
+            if not update_quantity:
                 cart.quantity = quantity
             else:
                 cart.quantity += quantity
@@ -130,8 +132,12 @@ class _Cart:
         else:
             product_id = str(product.pk)
             if product_id not in self.cart:
-                self.cart[product_id] = {'quantity': 0, 'price': str(product.price), "product": product_serializer.data}
-            if update_quantity:
+                self.cart[product_id] = {
+                'quantity': 0,
+                'price': str(product.price),
+                'product': product_serializer.data
+                }
+            if not update_quantity:
                 self.cart[product_id]['quantity'] = quantity
             else:
                 self.cart[product_id]['quantity'] += quantity
@@ -157,3 +163,156 @@ class _Cart:
         # self.save()
 
         return self.cart
+
+
+## Try to implement
+# class _Cart:
+#     """
+#     A Basket class with different storage mechanisms depending on user authentication.
+#     """
+
+#     def __init__(self, request):
+#         self.session = request.session
+#         self.user = request.user
+
+#         if self.user.is_authenticated:
+#             self.basket = self.get_user_basket_items()
+#         else:
+#             basket = self.session.get('skey')
+#             if 'skey' not in request.session:
+#                 basket = self.session['skey'] = {}
+            
+#             print("Текущая корзина: ", basket)
+#             self.basket = basket
+
+#     def get_user_basket_items(self):
+#         """
+#         Retrieves basket items from the database for an authenticated user.
+#         """
+#         return {
+#                 str(item.product.id):
+#             {
+#                 'price': str(item.product.price),
+#                 'quantity': item.quantity
+#             }
+#             for item in Cart.objects.filter(user=self.user)
+#                }
+
+#     def add(self,
+#             product_serializer: ProductSerializer,
+#             quantity : int = 1,
+#             updateQuantity: bool = False
+#             ):
+#         """
+#         Adding and updating the user's basket session or database data
+#         """
+#         product_id = str(product_serializer.data["pk"])
+#         product = Product.objects.get(pk=int(product_id))
+
+#         if self.user.is_authenticated:
+#             cart, created = Cart.objects.get_or_create(user=self.user, product=product)
+            
+#             if not updateQuantity:
+#                 cart.quantity = quantity
+#             else:
+#                 cart.quantity += quantity
+
+#             cart.save()
+
+#         else:
+#             if product_id in self.basket:
+#                 self.basket[product_id]['quantity'] += quantity
+#             else:
+#                 self.basket[product_id] = {
+#                     'price': str(product.price),
+#                     'quantity': quantity,
+#                     'product': product_serializer.data
+#                     }
+
+#             self.save()
+            
+#         return self.basket
+
+#     def __iter__(self):
+#         """
+#         Collect the product_id in the session data or database to query the products
+#         """
+#         if self.user.is_authenticated:
+#             basket_items = Cart.objects.filter(user=self.user)
+#             for item in basket_items:
+#                 yield {
+#                     'product': item.product,
+#                     'price': str(item.product.price),
+#                     'quantity': item.quantity,
+#                     'total_price': str(item.product.price) * item.quantity
+#                 }
+#         else:
+#             product_ids = self.basket.keys()
+#             products = Product.objects.filter(id__in=product_ids)
+#             basket = self.basket.copy()
+
+#             for product in products:
+#                 basket[str(product.id)]['product'] = product
+
+#             for item in basket.values():
+#                 item['price'] = str(item['price'])
+#                 item['total_price'] = item['price'] * item['qty']
+#                 yield item
+
+#     def __len__(self):
+#         """
+#         Get the basket data and count the qty of items
+#         """
+#         if self.user.is_authenticated:
+#             return Cart.objects.filter(user=self.user).count()
+#         else:
+#             return sum(item['quantity'] for item in self.basket.values())
+
+#     def update(self, product, qty):
+#         """
+#         Update values in session data or database
+#         """
+#         product_id = str(product.id)
+
+#         if self.user.is_authenticated:
+#             try:
+#                 basket_item = Cart.objects.get(user=self.user, product=product)
+#                 basket_item.quantity = qty
+#                 basket_item.save()
+#             except Cart.DoesNotExist:
+#                 pass
+#         else:
+#             if product_id in self.basket:
+#                 self.basket[product_id]['quantity'] = qty
+#             self.save()
+
+#     def get_total_price(self):
+#         """
+#         Calculate total price from session data or database
+#         """
+#         if self.user.is_authenticated:
+#             return sum(Decimal(item.product.price) * item.quantity for item in Cart.objects.filter(user=self.user))
+#         else:
+#             return sum(Decimal(item['price']) * item['quantity'] for item in self.basket.values())
+
+#     def delete(self, product):
+#         """
+#         Delete item from session data or database
+#         """
+#         product_id = str(product.id)
+
+#         if self.user.is_authenticated:
+#             try:
+#                 basket_item = Cart.objects.get(user=self.user, product=product)
+#                 basket_item.delete()
+#             except Cart.DoesNotExist:
+#                 pass
+#         else:
+#             if product_id in self.basket:
+#                 del self.basket[product_id]
+#             self.save()
+
+#     def save(self):
+#         if not self.user.is_authenticated:
+#             self.session["skey"] = self.basket
+#             self.session.modified = True
