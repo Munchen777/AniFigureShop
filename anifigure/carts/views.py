@@ -20,6 +20,8 @@ class CartAddAPIView(APIView, CartMixin):
     permission_classes = [AllowAny]
     def post(self, request: Request) -> Response:
         print("сработал метод post")
+        update_quantity = request.data["updateQuantity"]
+        print("Обновляем количество или нет: ", update_quantity)
         product = request.data["product"]
         quantity = request.data["quantity"]
 
@@ -30,7 +32,11 @@ class CartAddAPIView(APIView, CartMixin):
         # product_id = str(product_serializer.validated_data["pk"])
 
         cart = _Cart(request)
-        cart_with_products = cart.add(product_serializer, quantity)
+        cart_with_products = cart.add(
+            product_serializer=product_serializer,
+            quantity=quantity,
+            update_quantity=update_quantity
+            )
         print(f"{cart.cart=}")
 
         # # Находим товар в БД
@@ -41,10 +47,10 @@ class CartAddAPIView(APIView, CartMixin):
         print(f"{cart_with_products=}")
         cart_items = [
             {
-             "product": val["product"],
-             "quantity": val["quantity"]
+             "product": value["product"],
+             "quantity": value["quantity"]
             }
-            for val in cart_with_products.values()
+            for value in cart_with_products.values()
             ]
 
         cart_item_serializer = CartItemSerializer(cart_items, many=True)
