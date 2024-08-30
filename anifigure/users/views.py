@@ -20,7 +20,6 @@ from rest_framework_simplejwt.token_blacklist.models import (BlacklistedToken,
 
 
 from api.models import User
-from api.utils import encode_token, decode_token
 from products.models import Product
 from .serializers import UserSerializer, UserLoginSerializer
 from users.managers import CustomUserManager
