@@ -26,7 +26,7 @@ const ProductsComponent = () => {
     const [quantity, setQuantity] = useState(0);
 
 
-    const handlePurchase = async (product, updatedQuantity) => {
+    const handlePurchase = async (product, updatedQuantity, updateQuantity = false) => {
       setQuantity(updatedQuantity)
 
       try {
@@ -35,6 +35,7 @@ const ProductsComponent = () => {
         const response = await makeRequest(`${ROOT_API}/api/carts/purchase/`, "POST", {
           product: product,
           quantity: updatedQuantity,
+          updateQuantity: updateQuantity
         }, {
           Authorization: `Bearer ${access_token}`
         })
@@ -52,12 +53,12 @@ const ProductsComponent = () => {
   
     const handleIncrement = async (product) => {
       const updatedQuantity = quantity + 1
-      handlePurchase(product, updatedQuantity)
+      handlePurchase(product, updatedQuantity, true)
     };
 
     const handleDecrement = async (product) => {
       const updatedQuantity = quantity > 1 ? quantity - 1 : 0
-      handlePurchase(product, updatedQuantity)
+      handlePurchase(product, updatedQuantity, true)
     };
 
     useEffect(() => {
