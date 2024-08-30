@@ -2,7 +2,6 @@ from rest_framework import serializers
 
 
 from api.models import User
-from api.utils import jwt_helper, encode_token
 
 
 class UserSerializer(serializers.ModelSerializer):    
