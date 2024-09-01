@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import transaction
+from django.contrib.sessions.models import Session
 from rest_framework.request import Request
 
 
@@ -8,33 +9,12 @@ from products.models import Product
 from products.serializers import ProductSerializer
 
 
-"""
-
-class Cart(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True, verbose_name="User")
-    # product = models.ForeignKey(to=Product, on_delete=models.CASCADE, verbose_name="Product", related_name="cart")
-    quantity = models.PositiveIntegerField(default=0, verbose_name="Quantity")
-    session_key = models.CharField(max_length=35, null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="The date of adding")
-
-
-class CartItem(models.Model):
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name="cart_item")
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="cart_product")
-    updated_at = models.DateTimeField(verbose_name="Cart item updated at", auto_now=True)
-    created_at = models.DateTimeField(verbose_name="Cart item created at", auto_now_add=True)
-    quantity = models.PositiveIntegerField(default=1)
-
-"""
-
-
 class _Cart:
     def __init__(self,
                  request: Request
                  ):
         self.use_db = False
-        print(f"{request.user.is_authenticated=}")
-        self.session = request.session
+        self.session: Session = request.session
         self.user = request.user
         self.queryset = None
 
@@ -43,38 +23,31 @@ class _Cart:
         if self.user.is_authenticated:
             self.use_db = True
             if cart:
-                print(f"Текущая корзина пользователя: {cart=}")
                 self.save_db(cart, self.user)
 
-            self.queryset = Cart.objects.filter(user=self.user) # Находим корзину пользователя
-            cart = self.get_cart_from_db(self.queryset) # Находим корзину в бд
+            self.queryset = Cart.objects.filter(user=self.user)
+            cart = self.get_cart_from_db(self.queryset)
 
         else:
             if not cart:
                 # save an empty cart in session
                 cart = self.session[settings.CART_SESSION_ID] = {}
-            print(f"Текущая корзина анонима: {cart}")
-        print(self.use_db)
+
         self.cart = cart
 
     def get_cart_from_db(self, qs):
-        print("сработал метод get_cart_from_db")
         cart = {}
         for item in qs:
             cart[str(item.product.pk)] = {'product': item.product, 'quantity': item.quantity}
 
-        print(f"{cart=} из метода get_cart_from_db")
         return cart
 
     def save(self):
-        print("сработал метод save")
         if not self.use_db:
             self.session[settings.CART_SESSION_ID] = self.cart
             self.session.modified = True
-            print("сессия модифицирована: ", self.session[settings.CART_SESSION_ID])
 
     def save_db(self, cart: dict, user):
-        print("сработал метод save_db")
         for key, value in cart.items():
             if Cart.objects.filter(user=user, product=product).exists():
                 product = Cart.objects.select_for_update().get(user=user, product=product)
@@ -143,24 +116,6 @@ class _Cart:
                 self.cart[product_id]['quantity'] += quantity
 
             self.save()
-
-        # product_id = str(product_serializer.validated_data["pk"])
-        # print(product_serializer.validated_data)
-
-        # print(f"Текущая корзина: {self.cart=}")
-        # if product_id in self.cart:
-        #     print("товар в корзине")
-        #     self.cart[product_id]["quantity"] += quantity
-        #     print(self.cart[product_id]["quantity"])
-        #     if self.cart[product_id]["quantity"] <= 0:
-        #         del self.cart[product_id]
-        # else:
-        #     print("товара нет в корзине")
-        #     self.cart[product_id] = {
-        #         "product": product_serializer.data,
-        #         "quantity": quantity
-        #     }
-        # self.save()
 
         return self.cart
 
