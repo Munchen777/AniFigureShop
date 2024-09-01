@@ -11,11 +11,6 @@ class Category(models.Model):
     category_image = models.ImageField(upload_to="categories/", default=None, blank=True, null=True,
                                        verbose_name="Category image")
 
-    # def get_absolute_url(self):
-    #     return reverse('category', kwargs={'category_slug': self.slug})
-
-    def __str__(self):
-        return self.name or ""
 
 class Product(models.Model):
     name = models.CharField(max_length=255, verbose_name="Product name")
@@ -32,17 +27,11 @@ class Product(models.Model):
     created_at = models.DateTimeField(verbose_name="Product created at", auto_now_add=True)
     quantity = models.PositiveIntegerField(default=0, verbose_name="Quantity of product")
 
-    # def get_absolute_url(self):
-    #     return reverse('product', kwargs={'product_slug': self.slug})
-
     def sell_price(self):
         if self.discount:
             return round(self.price - self.price * (self.discount / 100), 2)
 
         return self.price
-    
-    def __str__(self) -> str:
-        return self.name or ""
 
 
 def product_images_directory_path(instance: "Product", filename: str) -> str:
@@ -56,11 +45,3 @@ class ProductImage(models.Model):
     product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
     image = models.ImageField(upload_to=product_images_directory_path, default=None, blank=True, null=True,
                               verbose_name="Product Image")
-
-    def __str__(self):
-        return f"Image for {self.product.name if self.product else ""}"
-
-
-
-# class UploadToCategory(models.Model):
-#     file = models.FileField(upload_to='categories/')
