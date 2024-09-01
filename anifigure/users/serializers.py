@@ -30,18 +30,9 @@ class UserLoginSerializer(serializers.ModelSerializer):
     token = serializers.SerializerMethodField()
 
     class Meta(UserSerializer.Meta):
-        # fields = [
-        #     "email",
-        #     "username",
-        #     "password",
-        # ]
         extra_kwargs = {
             "email": {"required": False},
             "username": {"required": False},
             "password": {"write_only": True, "required": False},
         }
         fields = UserSerializer.Meta.fields + ('token',)
-
-    # def get_token(self, user):
-    #     user = encode_token(user)
-    #     return user
