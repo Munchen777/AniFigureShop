@@ -7,24 +7,6 @@ from orders.models import OrderItem
 from users.serializers import UserSerializer
 from .models import Cart, CartItem
 
-"""
-
-class Cart(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True, verbose_name="User")
-    # product = models.ForeignKey(to=Product, on_delete=models.CASCADE, verbose_name="Product", related_name="cart")
-    quantity = models.PositiveIntegerField(default=0, verbose_name="Quantity")
-    session_key = models.CharField(max_length=35, null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="The date of adding")
-
-class CartItem(models.Model):
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name="cart_item")
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="cart_product")
-    updated_at = models.DateTimeField(verbose_name="Cart item updated at", auto_now=True)
-    created_at = models.DateTimeField(verbose_name="Cart item created at", auto_now_add=True)
-    quantity = models.PositiveIntegerField(default=1)
-
-"""
-
 
 class OrderedItemSerializer(serializers.ModelSerializer):
     class Meta:
