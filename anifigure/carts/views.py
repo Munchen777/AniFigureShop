@@ -18,18 +18,15 @@ from .serializers import CartSerializer, CartItemSerializer
 class CartAddAPIView(APIView, CartMixin):
     authentication_classes = []
     permission_classes = [AllowAny]
+
     def post(self, request: Request) -> Response:
-        print("сработал метод post")
         update_quantity = request.data["updateQuantity"]
-        print("Обновляем количество или нет: ", update_quantity)
         product = request.data["product"]
         quantity = request.data["quantity"]
 
         # Валидация данных продукта
         product_serializer = ProductSerializer(data=product)
         product_serializer.is_valid(raise_exception=True)
-        # print(serializer.validated_data)
-        # product_id = str(product_serializer.validated_data["pk"])
 
         cart = _Cart(request)
         cart_with_products = cart.add(
@@ -37,14 +34,7 @@ class CartAddAPIView(APIView, CartMixin):
             quantity=quantity,
             update_quantity=update_quantity
             )
-        print(f"{cart.cart=}")
 
-        # # Находим товар в БД
-        # try:
-        #     product = Product.objects.get(pk=product_id)
-        # except Product.DoesNotExist:
-        #     return Response({"error": "Product not found"}, status=status.HTTP_404_NOT_FOUND)
-        print(f"{cart_with_products=}")
         cart_items = [
             {
              "product": value["product"],
@@ -54,44 +44,6 @@ class CartAddAPIView(APIView, CartMixin):
             ]
 
         cart_item_serializer = CartItemSerializer(cart_items, many=True)
-        print(f"{cart_item_serializer.data=}")
 
         return Response({"msg": "cart item successfully added to cart!",
                          "cart": cart_item_serializer.data}, status=status.HTTP_200_OK)
-
-            
-        # session = request.session
-
-        # product_data = serializer.validated_data
-        # for key, value in product_data.items():
-        #     if isinstance(value, Decimal):
-        #         product_data[key] = float(value)
-
-        # if "cart" not in session:
-        #     session["cart"] = {}
-
-        # cart = session["cart"]
-        # print(f"Current session cart before modification: {session.get('cart', {})}")
-
-        # if str(product_id) in cart:
-        #     print("cart item находится в корзине")
-        #     cart[str(product_id)]["quantity"] += quantity
-        #     if cart[str(product_id)]["quantity"] <= 0: # ?
-        #         del cart[str(product_id)] # ?
-        #         session.modified = True
-
-        #     print(f"{cart[str(product_id)]=}")
-
-        # else:
-        #     print("cart item нет в корзине!")
-        #     cart[str(product_id)] = {
-        #         "product": product_data,
-        #         "quantity": quantity,
-        #     }
-
-        # session["cart"] = cart
-        # session.modified = True
-        # print(f"{session["cart"]=}")
-        # return Response({"msg": "cart item successfully added to cart!",
-        #                  "cart": session["cart"]}, status=status.HTTP_202_ACCEPTED)
-        
