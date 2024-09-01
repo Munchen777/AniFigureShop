@@ -31,9 +31,6 @@ class Order(models.Model):
         verbose_name_plural = 'Заказы'
         verbose_name = 'Заказ'
 
-    def __repr__(self) -> str:
-        return f"Order № {self.pk}\nUser: {self.user.username}"
-
 
 class OrderItem(models.Model):
     order = models.ForeignKey(to=Order, on_delete=models.CASCADE, verbose_name="Order")
@@ -52,6 +49,3 @@ class OrderItem(models.Model):
         return round(self.product.sell_price() * self.quantity, 2)
 
     objects = OrderitemQueryset.as_manager()
-
-    def __str__(self):
-        return f"{self.quantity} x {self.product.name if self.product else ""} in cart"
