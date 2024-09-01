@@ -33,12 +33,6 @@ class Cart(models.Model):
     def products_price(self):
         return round(self.product.sell_price() * self.quantity, 2)
 
-    # def __str__(self) -> str:
-    #     if self.user:
-    #         return f"Корзина {self.user.username} | Количество {self.quantity}" # Товар {self.product.name if self.product else ""}
-
-    #     return f"Анонимная корзина | Количество {self.quantity}" # Товар {self.product.name if self.product else ""}
-
 
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name="cart_item")
@@ -46,6 +40,3 @@ class CartItem(models.Model):
     updated_at = models.DateTimeField(verbose_name="Cart item updated at", auto_now=True)
     created_at = models.DateTimeField(verbose_name="Cart item created at", auto_now_add=True)
     quantity = models.PositiveIntegerField(default=1)
-
-    # def __str__(self):
-    #     return f"Корзина {self.cart.user.username if self.cart.user else "anonymous user"} | Товар {self.product.name if self.product else ""} | Количество {self.quantity}"
