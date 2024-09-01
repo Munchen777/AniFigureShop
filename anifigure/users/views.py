@@ -5,6 +5,9 @@ from django.shortcuts import render, redirect
 # from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView
+from drf_spectacular.utils import (extend_schema,
+                                   extend_schema_view
+                                   )
 
 
 from rest_framework import status
@@ -36,6 +39,15 @@ def get_tokens_for_user(user):
     }
 
 
+@extend_schema(
+    summary="Регистрирует нового пользователя",
+    description=(
+        "Данный эндпоинт предназначен для регистрации нового пользователя."
+    ),
+    request=UserSerializer,
+    responses={201: Response},
+    methods=["POST"],
+)
 class RegisterAPIView(APIView):
     """
     View for registration new user
@@ -59,6 +71,17 @@ class RegisterAPIView(APIView):
             status=status.HTTP_201_CREATED)
 
 
+@extend_schema(
+    summary="Логин пользователя",
+    description=(
+        "Аутентифицируем пользователя по JWT токену.",
+        "Если у пользователя токен валидный, то возвращается ответ со статус кодом 200",
+        "Если у пользователя токен невалидный или истек, возвращаем ответ со статус кодом 401",
+        "В случае, когда у пользователя нет токена, то находим его и отдаем токены"
+    ),
+    auth=["JWT Authentication"],
+    tags=["Пользователи"],
+)
 class LoginAPIView(APIView):
     """
     View for login user
