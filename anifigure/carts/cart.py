@@ -13,27 +13,36 @@ class _Cart:
     def __init__(self,
                  request: Request
                  ):
-        self.use_db = False
         self.session: Session = request.session
-        self.user = request.user
-        self.queryset = None
-
         cart = self.session.get(settings.CART_SESSION_ID)
-
-        if self.user.is_authenticated:
-            self.use_db = True
-            if cart:
-                self.save_db(cart, self.user)
-
-            self.queryset = Cart.objects.filter(user=self.user)
-            cart = self.get_cart_from_db(self.queryset)
-
-        else:
-            if not cart:
-                # save an empty cart in session
-                cart = self.session[settings.CART_SESSION_ID] = {}
-
+        if not cart:
+            # сохранить пустую корзину в сеансе
+            cart = self.session[settings.CART_SESSION_ID] = {}
+        print(f"{cart = }")
         self.cart = cart
+        
+        
+        # self.use_db = False
+        # self.session: Session = request.session
+        # self.user = request.user
+        # self.queryset = None
+
+        # cart = self.session.get(settings.CART_SESSION_ID)
+
+        # if self.user.is_authenticated:
+        #     self.use_db = True
+        #     if cart:
+        #         self.save_db(cart, self.user)
+
+        #     self.queryset = Cart.objects.filter(user=self.user)
+        #     cart = self.get_cart_from_db(self.queryset)
+
+        # else:
+        #     if not cart:
+        #         # save an empty cart in session
+        #         cart = self.session[settings.CART_SESSION_ID] = {}
+
+        # self.cart = cart
 
     def get_cart_from_db(self, qs):
         cart = {}
@@ -43,9 +52,9 @@ class _Cart:
         return cart
 
     def save(self):
-        if not self.use_db:
-            self.session[settings.CART_SESSION_ID] = self.cart
-            self.session.modified = True
+        # if not self.use_db:
+        self.session[settings.CART_SESSION_ID] = self.cart
+        self.session.modified = True
 
     def save_db(self, cart: dict, user):
         for key, value in cart.items():
@@ -81,43 +90,62 @@ class _Cart:
             ):
         # Получаем продукт
         product_pk = product_serializer.data["pk"]
-        product = Product.objects.get(pk=product_pk)
+        product_id = str(Product.objects.get(pk=product_pk))
 
-        if self.use_db:
-            if self.queryset.filter(product=product).exists():
-                with transaction.atomic():
-                    cart = self.queryset.select_for_update().get(product=product)
-            else:
-                cart = Cart(
-                    user=self.user,
-                    product=product,
-                    quantity=0,
-                    # price=product.price
-                )
-
-            if not update_quantity:
-                cart.quantity = quantity
-            else:
-                cart.quantity += quantity
-
-            cart.save()
-
+        # Если есть такой продукт в корзине, то обновляем количество
+        if product_id in self.cart:
+            self.cart[product_id]["quantity"] += quantity
+            print(self.cart[product_id]["quantity"])
+            # Если при обновлении количество стало <= 0, то удаляем продукт из корзины
+            if self.cart[product_id]["quantity"] <= 0:
+                del self.cart[product_id]
+        # Иначе, добавляем в корзину
         else:
-            product_id = str(product.pk)
-            if product_id not in self.cart:
-                self.cart[product_id] = {
-                'quantity': 0,
-                'price': str(product.price),
-                'product': product_serializer.data
-                }
-            if not update_quantity:
-                self.cart[product_id]['quantity'] = quantity
-            else:
-                self.cart[product_id]['quantity'] += quantity
-
-            self.save()
+            self.cart[product_id] = {
+                "product": product_serializer.data,
+                "quantity": quantity
+            }
+        self.save()
 
         return self.cart
+
+
+        # Previous implementation
+        # if self.use_db:
+        #     if self.queryset.filter(product=product).exists():
+        #         with transaction.atomic():
+        #             cart = self.queryset.select_for_update().get(product=product)
+        #     else:
+        #         cart = Cart(
+        #             user=self.user,
+        #             product=product,
+        #             quantity=0,
+        #             # price=product.price
+        #         )
+
+        #     if not update_quantity:
+        #         cart.quantity = quantity
+        #     else:
+        #         cart.quantity += quantity
+
+        #     cart.save()
+
+        # else:
+        #     product_id = str(product.pk)
+        #     if product_id not in self.cart:
+        #         self.cart[product_id] = {
+        #         'quantity': 0,
+        #         'price': str(product.price),
+        #         'product': product_serializer.data
+        #         }
+        #     if not update_quantity:
+        #         self.cart[product_id]['quantity'] = quantity
+        #     else:
+        #         self.cart[product_id]['quantity'] += quantity
+
+        #     self.save()
+
+        # return self.cart
 
 
 ## Try to implement
