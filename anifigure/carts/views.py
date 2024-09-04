@@ -5,6 +5,9 @@ from rest_framework.views import APIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
+from drf_spectacular.utils import (extend_schema,
+                                   extend_schema_view
+                                   )
 
 
 from products.serializers import ProductSerializer
@@ -15,6 +18,9 @@ from .mixins import CartMixin
 from .serializers import CartSerializer, CartItemSerializer
 
 
+@extend_schema(
+    summary="Endpoint для работы с корзиной товаров"
+)
 class CartAddAPIView(APIView, CartMixin):
     authentication_classes = []
     permission_classes = [AllowAny]
