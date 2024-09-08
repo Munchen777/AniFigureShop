@@ -107,12 +107,14 @@ def base_view(request):
 
 
 def add_to_cart(request, product_id):
+    quantity = int(request.POST.get('quantity', 1))
+    print(quantity)
     if request.user.is_authenticated:
         user = request.user
         product = Product.objects.get(id=product_id)
 
         # Создаем запись в корзине
-        cart_item = CartItem.add_to_cart(user=user, product=product, quantity=1)
+        cart_item = CartItem.add_to_cart(user=user, product=product, quantity=quantity)
 
     return redirect('users:cart')
 

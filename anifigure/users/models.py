@@ -16,7 +16,7 @@ class CartItem(models.Model):
         existing_item = cls.objects.filter(user=user, product=product).first()
 
         if existing_item:
-            existing_item.quantity += 1
+            existing_item.quantity += quantity
             existing_item.save()
 
         else:

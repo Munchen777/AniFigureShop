@@ -114,35 +114,32 @@
                             <label for=""
                                 class="w-full text-xl font-semibold text-gray-700 dark:text-gray-400">Количество:</label>
                             <div class="relative flex flex-row w-full h-10 mt-4 bg-transparent rounded-lg">
-                                <button id="decrease-btn"
-                                    class="w-20 h-full text-gray-600 bg-gray-300 rounded-l outline-none cursor-pointer dark:hover:bg-gray-700 dark:text-gray-400 hover:text-gray-700 dark:bg-gray-900 hover:bg-gray-400">
-                                    <span class="m-auto text-2xl font-thin">-</span>
-                                </button>
-                                <input type="number" id="quantity"
-                                    class="flex items-center w-full font-semibold text-center text-gray-700 placeholder-gray-700 bg-gray-300 outline-none dark:text-gray-400 dark:placeholder-gray-400 dark:bg-gray-900 focus:outline-none text-md hover:text-black"
-                                    placeholder="1">
-                                <button id="increase-btn"
-                                    class="w-20 h-full text-gray-600 bg-gray-300 rounded-r outline-none cursor-pointer dark:hover:bg-gray-700 dark:text-gray-400 dark:bg-gray-900 hover:text-gray-700 hover:bg-gray-400">
-                                    <span class="m-auto text-2xl font-thin">+</span>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="flex flex-wrap items-center -mx-4 ">
-                            <div class="w-full px-4 mb-4 lg:w-1/2 lg:mb-0">
-                             <form action="{% url 'add_to_cart' product.id %}" method="post">
-                                 {% csrf_token %}
-                                <button
-                                    class="flex items-center justify-center w-full p-4 text-blue-500 border border-blue-500 rounded-md dark:text-gray-200 dark:border-blue-600 hover:bg-blue-600 hover:border-blue-600 hover:text-gray-100 dark:bg-blue-600 dark:hover:bg-blue-700 dark:hover:border-blue-700 dark:hover:text-gray-300">
-                                    В корзину
-                                </button>
-                                 </form>
-                            </div>
-                            <div class="w-full px-4 mb-4 lg:mb-0 lg:w-1/2">
-                                <button
-                                    class="flex items-center justify-center w-full p-4 text-blue-500 border border-blue-500 rounded-md dark:text-gray-200 dark:border-blue-600 hover:bg-blue-600 hover:border-blue-600 hover:text-gray-100 dark:bg-blue-600 dark:hover:bg-blue-700 dark:hover:border-blue-700 dark:hover:text-gray-300">
-                                    В избранное
-                                </button>
-                            </div>
+    <button id="decrease-btn"
+        class="w-20 h-full text-gray-600 bg-gray-300 rounded-l outline-none cursor-pointer dark:hover:bg-gray-700 dark:text-gray-400 hover:text-gray-700 dark:bg-gray-900 hover:bg-gray-400">
+        <span class="m-auto text-2xl font-thin">-</span>
+    </button>
+    <input type="number" id="quantity" name="quantity" value="1"
+        class="flex items-center w-full font-semibold text-center text-gray-700 placeholder-gray-700 bg-gray-300 outline-none dark:text-gray-400 dark:placeholder-gray-400 dark:bg-gray-900 focus:outline-none text-md hover:text-black"
+        min="1">
+    <button id="increase-btn"
+        class="w-20 h-full text-gray-600 bg-gray-300 rounded-r outline-none cursor-pointer dark:hover:bg-gray-700 dark:text-gray-400 dark:bg-gray-900 hover:text-gray-700 hover:bg-gray-400">
+        <span class="m-auto text-2xl font-thin">+</span>
+    </button>
+</div>
+
+<div class="flex flex-wrap items-center -mx-4 ">
+    <div class="w-full px-4 mb-4 lg:w-1/2 lg:mb-0">
+        <form action="{% url 'add_to_cart' product.id %}" method="post" id="cart-form">
+            {% csrf_token %}
+            <!-- Скрытое поле для передачи количества -->
+            <input type="hidden" name="quantity" id="hidden-quantity" value="1">
+            <button
+                class="flex items-center justify-center w-full p-4 text-blue-500 border border-blue-500 rounded-md dark:text-gray-200 dark:border-blue-600 hover:bg-blue-600 hover:border-blue-600 hover:text-gray-100 dark:bg-blue-600 dark:hover:bg-blue-700 dark:hover:border-blue-700 dark:hover:text-gray-300">
+                В корзину
+            </button>
+        </form>
+    </div>
+
                         </div>
                     </div>
                 </div>
@@ -154,28 +151,38 @@
     </section>
 
 
-<script type="text/javascript">
-    var decreaseBtn = document.getElementById('decrease-btn');
-    var increaseBtn = document.getElementById('increase-btn');
-    var quantityInput = document.getElementById('quantity');
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const decreaseBtn = document.getElementById('decrease-btn');
+        const increaseBtn = document.getElementById('increase-btn');
+        const quantityInput = document.getElementById('quantity');
+        const hiddenQuantityInput = document.getElementById('hidden-quantity');
 
-    var quantity = 1;
-    quantityInput.value = quantity;
+        // Уменьшение количества
+        decreaseBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            let quantity = parseInt(quantityInput.value);
+            if (quantity > 1) {
+                quantity--;
+                quantityInput.value = quantity;
+                hiddenQuantityInput.value = quantity;
+            }
+        });
 
-    function decreaseQuantity() {
-        if (quantity > 1) {
-            quantity--;
+        // Увеличение количества
+        increaseBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            let quantity = parseInt(quantityInput.value);
+            quantity++;
             quantityInput.value = quantity;
-        }
-    }
+            hiddenQuantityInput.value = quantity;
+        });
 
-    function increaseQuantity() {
-        quantity++;
-        quantityInput.value = quantity;
-    }
-
-    decreaseBtn.addEventListener('click', decreaseQuantity);
-    increaseBtn.addEventListener('click', increaseQuantity);
+        // Обновляем скрытое поле при изменении значения в инпуте
+        quantityInput.addEventListener('change', function () {
+            hiddenQuantityInput.value = quantityInput.value;
+        });
+    });
 </script>
 
 {% include 'footer.html' %}
