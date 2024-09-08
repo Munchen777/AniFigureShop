@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+{% include 'header.html' %}
+
+
+
+<section class="overflow-hidden bg-gray-2 py-11 font-poppins dark:bg-gray-800 tovar">
+<div class="max-w-4xl lg:h-screen flex-wrap mx-auto my-32 lg:my-0" style="min-height: 90vh;">
+<div class="mb-10 mt-40 overflow-hidden rounded-lg bg-white shadow-1 duration-300 hover:shadow-black shadow-1">
+    <a href="">
+                  <img
+                src='{% static "base/images/bonuses/bonus_image.png" %}'
+                alt="image"
+                class="w-full"
+              />
+    </a>
+</div>
+
+
+</div>
+</section>
+{% include 'footer.html' %}
+
+{% endblock %}
+

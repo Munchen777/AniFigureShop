@@ -13,6 +13,14 @@ def page_not_found(request, exception):
     return HttpResponseNotFound("Ne naidena brat")
 
 
+def bonuses_page_view(request):
+    return render(request, 'base/bonuses_page.html')
+
+
+def promotion_page_view(request):
+    return render(request, 'base/bonuses_page.html')
+
+
 def anime_category_view(request):
     categories = Category.objects.filter(parent_category=1)
     print(categories)
@@ -108,7 +116,7 @@ def base_view(request):
 
 def add_to_cart(request, product_id):
     quantity = int(request.POST.get('quantity', 1))
-    print(quantity)
+
     if request.user.is_authenticated:
         user = request.user
         product = Product.objects.get(id=product_id)

@@ -4,6 +4,8 @@ from . import views
 urlpatterns = [
     path("", views.base_view, name="main"),
 
+    path("bonuses/", views.bonuses_page_view, name="bonuses"),
+    path("bonuses/<slug:bonus_slug>/", views.promotion_page_view, name="promotion"),
 
 
     path("random-category/", views.random_category_view, name="random-category"),
