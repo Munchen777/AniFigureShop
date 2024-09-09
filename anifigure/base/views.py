@@ -67,10 +67,12 @@ def anime_products_view(request, category_slug, product_slug):
 
 def random_category_view(request):
     products = Product.objects.filter(category=2)
+    spin_attempt, created = SpinAttempt.objects.get_or_create(user=request.user)
 
     data = {
         "title": "AniShop: Рандом",
         "products": products,
+        'attempts': spin_attempt.attempts,
     }
     return render(request, 'base/random_category.html', context=data)
 
@@ -130,10 +132,10 @@ def add_to_cart(request, product_id):
 def save_roulette_bonus(request):
     if request.method == 'POST':
         data = json.loads(request.body)
-
+        print(data)
         # Получаем или создаём запись для пользователя
         spin_attempt, created = SpinAttempt.objects.get_or_create(user=request.user)
-
+        print(spin_attempt.attempts)
         # Проверяем, есть ли у пользователя доступные попытки
         if spin_attempt.attempts > 0:
             # Уменьшаем количество попыток на 1
@@ -146,7 +148,7 @@ def save_roulette_bonus(request):
             print(prize)
 
             # Возвращаем приз в ответе
-            return render(request, 'spin_result.html', {'prize': prize})
+            return render(request, 'base/random_category.html')
         else:
             return JsonResponse({'status': 'No spin attempts left'}, status=400)
 

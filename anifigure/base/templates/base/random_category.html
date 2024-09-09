@@ -50,8 +50,12 @@
 
 
     <button onclick="start()" class="start">Крутить</button>
+
+
 </div>
+
     <div class="container mx-auto">
+    <p id="attempts-count" class="text-center pt-20 text-2xl OurPrizes">Осталось попыток: {{ attempts }}</p>
   <h2 class="text-center py-32 text-3xl OurPrizes">Наши призы:</h2>
 
   <div class="-mx-4 flex flex-wrap">
@@ -223,10 +227,20 @@ function start() {
         'X-CSRFToken': "{{ csrf_token }}",
       },
       body: JSON.stringify(data),
+    }).then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            alert('Ваш приз: ' + data.prize);
+        } else if (data.status === 'No spin attempts left') {
+            alert('У вас больше нет попыток.');
+        }
+
+        // Обновляем количество попыток на странице
+        document.getElementById('attempts-count').innerText = `Осталось попыток: ${data.attempts}`;
     })
     // .then(response => response.json())
     // .then(data => console.log(data))
-    // .catch(error => console.error('Error:', error));
+    .catch(error => console.error('Error:', error));
 
 
   }, {once: true})
