@@ -5,7 +5,7 @@ from django.http import HttpResponse, Http404, HttpResponseNotFound
 from django.templatetags.static import static
 from django.views.generic import CreateView
 from django.http import JsonResponse
-from base.models import Category, Product, ProductImage
+from base.models import Category, Product, ProductImage, SpinAttempt
 from users.models import CartItem
 
 
@@ -130,9 +130,24 @@ def add_to_cart(request, product_id):
 def save_roulette_bonus(request):
     if request.method == 'POST':
         data = json.loads(request.body)
-        # Тут можно сохранить данные в базу данных, используя Django ORM
-        # Например:
-        # Модель.objects.create(field=data)
-        print(data)
-        return JsonResponse({'status': 'Data saved successfully'})
+
+        # Получаем или создаём запись для пользователя
+        spin_attempt, created = SpinAttempt.objects.get_or_create(user=request.user)
+
+        # Проверяем, есть ли у пользователя доступные попытки
+        if spin_attempt.attempts > 0:
+            # Уменьшаем количество попыток на 1
+            spin_attempt.attempts -= 1
+            spin_attempt.save()
+
+            # Логика определения выигрыша
+            prize = data["name"]  # Приз, полученный через JS
+            print(data)
+            print(prize)
+
+            # Возвращаем приз в ответе
+            return render(request, 'spin_result.html', {'prize': prize})
+        else:
+            return JsonResponse({'status': 'No spin attempts left'}, status=400)
+
     return JsonResponse({'status': 'Invalid request'}, status=400)
