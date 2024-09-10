@@ -10,18 +10,15 @@ from products.serializers import ProductSerializer
 
 
 class _Cart:
-    def __init__(self,
-                 request: Request
-                 ):
+    def __init__(self, request: Request):
         self.session: Session = request.session
         cart = self.session.get(settings.CART_SESSION_ID)
         if not cart:
             # сохранить пустую корзину в сеансе
             cart = self.session[settings.CART_SESSION_ID] = {}
-        print(f"{cart = }")
+        print(f"Текущая корзина: {cart = }")
         self.cart = cart
-        
-        
+
         # self.use_db = False
         # self.session: Session = request.session
         # self.user = request.user
@@ -47,7 +44,10 @@ class _Cart:
     def get_cart_from_db(self, qs):
         cart = {}
         for item in qs:
-            cart[str(item.product.pk)] = {'product': item.product, 'quantity': item.quantity}
+            cart[str(item.product.pk)] = {
+                "product": item.product,
+                "quantity": item.quantity,
+            }
 
         return cart
 
@@ -59,16 +59,16 @@ class _Cart:
     def save_db(self, cart: dict, user):
         for key, value in cart.items():
             if Cart.objects.filter(user=user, product=product).exists():
-                product = Cart.objects.select_for_update().get(user=user, product=product)
+                product = Cart.objects.select_for_update().get(
+                    user=user, product=product
+                )
                 product.quantity += cart[key]["quantity"]
                 product.price = cart[key]["price"]
                 product.save()
             else:
                 product = Product.objects.get(pk=key)
                 Cart.objects.create(
-                    user=user,
-                    product=product,
-                    quantity=value["quantity"]
+                    user=user, product=product, quantity=value["quantity"]
                 )
 
     def __iter__(self):
@@ -83,11 +83,12 @@ class _Cart:
             item["total_price"] = str(item["price"] * item["quantity"])
             yield item
 
-    def add(self,
-            product_serializer: ProductSerializer,
-            quantity: int = 1,
-            update_quantity: bool = False
-            ):
+    def add(
+        self,
+        product_serializer: ProductSerializer,
+        quantity: int = 1,
+        update_quantity: bool = False,
+    ):
         # Получаем продукт
         product_pk = product_serializer.data["pk"]
         product_id = str(Product.objects.get(pk=product_pk))
@@ -103,12 +104,11 @@ class _Cart:
         else:
             self.cart[product_id] = {
                 "product": product_serializer.data,
-                "quantity": quantity
+                "quantity": quantity,
             }
         self.save()
 
         return self.cart
-
 
         # Previous implementation
         # if self.use_db:
@@ -164,7 +164,7 @@ class _Cart:
 #             basket = self.session.get('skey')
 #             if 'skey' not in request.session:
 #                 basket = self.session['skey'] = {}
-            
+
 #             print("Текущая корзина: ", basket)
 #             self.basket = basket
 
@@ -194,7 +194,7 @@ class _Cart:
 
 #         if self.user.is_authenticated:
 #             cart, created = Cart.objects.get_or_create(user=self.user, product=product)
-            
+
 #             if not updateQuantity:
 #                 cart.quantity = quantity
 #             else:
@@ -213,7 +213,7 @@ class _Cart:
 #                     }
 
 #             self.save()
-            
+
 #         return self.basket
 
 #     def __iter__(self):
