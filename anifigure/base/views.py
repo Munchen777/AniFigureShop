@@ -5,6 +5,7 @@ from django.http import HttpResponse, Http404, HttpResponseNotFound
 from django.templatetags.static import static
 from django.views.generic import CreateView
 from django.http import JsonResponse
+from django.http import HttpRequest
 from base.models import Category, Product, ProductImage, SpinAttempt
 from users.models import CartItem
 
@@ -65,10 +66,16 @@ def anime_products_view(request, category_slug, product_slug):
     return render(request, 'base/product.html', context=data)
 
 
-def random_category_view(request):
+def random_category_view(request: HttpRequest):
+    # Находим пользователя
+    user = request.user
     products = Product.objects.filter(category=2)
-    spin_attempt, created = SpinAttempt.objects.get_or_create(user=request.user)
 
+    # Если пользователь найден, то перенаправляем на страницу login
+    if user.is_anonymous:
+        return redirect('users:login')
+
+    spin_attempt, created = SpinAttempt.objects.get_or_create(user=user)
     data = {
         "title": "AniShop: Рандом",
         "products": products,
