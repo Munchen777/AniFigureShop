@@ -10,7 +10,7 @@ from users.models import CartItem
 
 
 def page_not_found(request, exception):
-    return HttpResponseNotFound("Ne naidena brat")
+    return HttpResponseNotFound("Такой страницы еще не существует(")
 
 
 def bonuses_page_view(request):
