@@ -14,6 +14,7 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+REAL_BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -65,7 +66,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            BASE_DIR / "templates",
+            REAL_BASE_DIR / "frontend" / "build",
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -131,7 +132,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/base/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    REAL_BASE_DIR / "frontend" / "build" / "static",
+]
 
 MEDIA_ROOT = BASE_DIR / 'images'
 MEDIA_URL = '/images/'
