@@ -7,7 +7,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView
 
-from base.models import Product, ProductImage
+from products.models import ProductImage
 from users.models import CartItem
 from users.forms import LoginUserForm, RegisterForm
 

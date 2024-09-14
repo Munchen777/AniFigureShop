@@ -42,7 +42,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
  */
 var _default = function _default(XRegExp) {
   /**
-   * Adds base support for Unicode matching:
+   * Adds base_delete_soon support for Unicode matching:
    * - Adds syntax `\p{..}` for matching Unicode tokens. Tokens can be inverted using `\P{..}` or
    *   `\p{^..}`. Token names ignore case, spaces, hyphens, and underscores. You can omit the
    *   braces for token names that are a single letter (e.g. `\pL` or `PL`).
@@ -388,7 +388,7 @@ exports["default"] = void 0;
 
 var _xregexp = _interopRequireDefault(require("./xregexp"));
 
-var _unicodeBase = _interopRequireDefault(require("./addons/unicode-base"));
+var _unicodeBase = _interopRequireDefault(require("./addons/unicode-base_delete_soon"));
 
 var _unicodeCategories = _interopRequireDefault(require("./addons/unicode-categories"));
 

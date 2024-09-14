@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'django_extensions',
     'corsheaders',
 
-    'base.apps.BaseConfig',
+    'roulette.apps.RouletteConfig',
+    'order.apps.OrderConfig',
+    'products.apps.ProductsConfig',
     'users.apps.UsersConfig',
 ]
 

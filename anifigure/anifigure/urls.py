@@ -3,11 +3,14 @@ from django.contrib import admin
 from django.urls import include, path
 
 from anifigure import settings
-from base.views import page_not_found, front
+from products.views import page_not_found
 
 urlpatterns = [
-    path("", front, name="front"),
-    # path("", include("base.urls")),
+
+    path("", include("products.urls")),
+    path("", include("roulette.urls")),
+    path("", include("users.urls")),
+    path("", include("order.urls")),
     path("users/", include("users.urls", namespace="users")),
     path("admin/", admin.site.urls),
 ]

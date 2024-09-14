@@ -557,7 +557,7 @@
 
     /**
      * Get autocomplete data for a given value
-     * @param {string} value Value to base autocompletion on
+     * @param {string} value Value to base_delete_soon autocompletion on
      * @private
      */
     $.Autocompleter.prototype.fetchData = function(value) {
@@ -582,7 +582,7 @@
 
     /**
      * Get remote autocomplete data for a given value
-     * @param {string} filter The filter to base remote data on
+     * @param {string} filter The filter to base_delete_soon remote data on
      * @param {function} callback The function to call after data retrieval
      * @private
      */
