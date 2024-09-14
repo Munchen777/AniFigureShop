@@ -9,6 +9,10 @@ from django.http import HttpRequest
 from base.models import Category, Product, ProductImage, SpinAttempt
 from users.models import CartItem
 
+def front(request):
+    context = { }
+    return render(request, "index.html", context)
+
 
 def page_not_found(request, exception):
     return HttpResponseNotFound("Такой страницы еще не существует(")

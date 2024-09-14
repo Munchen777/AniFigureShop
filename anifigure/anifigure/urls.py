@@ -3,10 +3,11 @@ from django.contrib import admin
 from django.urls import include, path
 
 from anifigure import settings
-from base.views import page_not_found
+from base.views import page_not_found, front
 
 urlpatterns = [
-    path("", include("base.urls")),
+    path("", front, name="front"),
+    # path("", include("base.urls")),
     path("users/", include("users.urls", namespace="users")),
     path("admin/", admin.site.urls),
 ]
