@@ -37,12 +37,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'django_extensions',
+    'corsheaders',
 
     'base.apps.BaseConfig',
     'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -53,6 +55,11 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'anifigure.urls'
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+]
+CORS_ALLOW_CREDENTIALS = True
 
 TEMPLATES = [
     {
@@ -87,6 +94,10 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
+AUTHENTICATION_BACKENDS = [
+    'users.backends.UserModelBackend',
+]
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
