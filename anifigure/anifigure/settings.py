@@ -39,6 +39,7 @@ INSTALLED_APPS = [
 
     'django_extensions',
     'corsheaders',
+    'rest_framework',
 
     'roulette.apps.RouletteConfig',
     'order.apps.OrderConfig',
@@ -59,10 +60,21 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'anifigure.urls'
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-]
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated'
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+}
+
+# CORS_ALLOWED_ORIGINS = [
+#     'http://localhost:3000',
+#     'http://127.0.0.1:3000',
+# ]
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS = True
 
 TEMPLATES = [
     {
@@ -90,7 +102,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'anifigureshop_db',
         'USER': 'postgres',
-        'PASSWORD': 'root',
+        'PASSWORD': 'MyMacM2',
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -148,3 +160,11 @@ LOGIN_REDIRECT_URL = "main"
 LOGOUT_REDIRECT_URL = "main"
 # при аутентификации 
 LOGIN_URL = "users:login"
+
+AUTH_USER_MODEL = "users.User"
+CSRF_COOKIE_HTTPONLY = False # CSRF будет доступен из JS
+SESSION_COOKIE_HTTPONLY = True # Кука с сессией не будет доступна
+
+# for Production
+# CSRF_COOKIE_HTTPONLY = True
+# SESSION_COOKIE_HTTPONLY = True
