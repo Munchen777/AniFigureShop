@@ -1,9 +1,5 @@
 import axios from 'axios'
 import { Box, Container, Divider, Stack, Typography, Card, CardContent } from "@mui/material";
-import CardMedia from '@mui/material/CardMedia';
-import CardActions from '@mui/material/CardActions';
-import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
 import { Component, useEffect, useState } from "react";
 import { ROOT_API } from '../index'
 
