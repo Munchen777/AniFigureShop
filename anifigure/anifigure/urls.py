@@ -13,7 +13,7 @@ from base.views import page_not_found
 
 
 urlpatterns = [
-    # path("", include("base.urls", namespace="base")),
+    path("", include("base.urls", namespace="base")),
     path("api/", include("api.urls")),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/token/', MyTokenObtainPairView.as_view(), name='token_obtain'),
