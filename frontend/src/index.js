@@ -3,19 +3,8 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
-
 
 export const ROOT_API = "http://127.0.0.1:8000/"
-// const router = createBrowserRouter([
-//   {
-//     path: "/",
-//     element: <div>Hello from main router</div>
-//   }
-// ])
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
