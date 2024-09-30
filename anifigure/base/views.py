@@ -110,11 +110,11 @@ def page_not_found(request, exception):
 #     return render(request, 'base/product.html', context=data)
 
 
-# def base_view(request):
-#     data = {
-#         "title": "AniShop",
-#     }
-#     return render(request, 'base/base.html', context=data)
+def base_view(request):
+    data = {
+        "title": "AniShop",
+    }
+    return render(request, 'index.html', context=data)
 
 
 # def add_to_cart(request, product_id):
