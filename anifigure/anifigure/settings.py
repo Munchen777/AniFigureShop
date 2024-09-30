@@ -14,6 +14,7 @@ from pathlib import Path
 from datetime import timedelta
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+REAL_BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -57,7 +58,6 @@ INSTALLED_APPS = [
     # JWT
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
-    # 'django_vite',
 ]
 
 SIMPLE_JWT = {
@@ -73,10 +73,11 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
-
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    
+    'corsheaders.middleware.CorsMiddleware',
+    
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -131,7 +132,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            BASE_DIR / "templates",
+            REAL_BASE_DIR / 'frontend' / 'build',
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -194,6 +195,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/base/'
+STATICFILES_DIRS = REAL_BASE_DIR / "frontend" / "build" / "static"
 
 MEDIA_ROOT = BASE_DIR / 'images'
 MEDIA_URL = '/images/'
