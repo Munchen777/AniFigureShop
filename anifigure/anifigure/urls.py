@@ -11,7 +11,7 @@ urlpatterns = [
     path("", include("roulette.urls")),
     path("", include("users.urls")),
     path("", include("order.urls")),
-    path("users/", include("users.urls", namespace="users")),
+    path("users/", include("users.urls")),
     path("admin/", admin.site.urls),
 ]
 
