@@ -7,7 +7,7 @@ export default function HomePage(params) {
   return (
     <>
       <Header />
-      <main>
+      <main className="bg-red-200">
         <MainPage />
       </main>
       <footer>
