@@ -139,7 +139,7 @@ export default function LoginPage() {
 
       if (access_token) {
         try {
-          const result = await makeRequest(`${ROOT_API}users/login/`, "POST");
+          const result = await makeRequest(`${ROOT_API}api/login/`, "POST");
 
           if (result?.msg == "User is already authenticated") {
             setIsAuthentincated(true);
@@ -168,7 +168,7 @@ export default function LoginPage() {
 
     // Делаем запрос
     try {
-      const result = await makeRequest(`${ROOT_API}users/login/`, "POST", {
+      const result = await makeRequest(`${ROOT_API}api/login/`, "POST", {
         username,
         password,
       });
