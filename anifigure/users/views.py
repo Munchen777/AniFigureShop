@@ -8,6 +8,7 @@ from django.views.generic import CreateView
 from drf_spectacular.utils import (extend_schema,
                                    extend_schema_view
                                    )
+from django.views.generic import TemplateView
 
 
 from rest_framework import status
@@ -131,7 +132,8 @@ class LoginAPIView(APIView):
         return Response({"msg": "error with login"}, status=status.HTTP_404_NOT_FOUND)
 
 
-
+class LoginTemplateView(TemplateView):
+    template_name = "index.html"
 
 
 
