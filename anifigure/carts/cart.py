@@ -16,7 +16,7 @@ class _Cart:
         if not cart:
             # сохранить пустую корзину в сеансе
             cart = self.session[settings.CART_SESSION_ID] = {}
-        print(f"Текущая корзина: {cart = }")
+        print(f"Найденная ранее корзина: {cart = }")
         self.cart = cart
 
         # self.use_db = False
@@ -95,7 +95,7 @@ class _Cart:
 
         # Если есть такой продукт в корзине, то обновляем количество
         if product_id in self.cart:
-            self.cart[product_id]["quantity"] += quantity
+            self.cart[product_id]["quantity"] = quantity
             print(self.cart[product_id]["quantity"])
             # Если при обновлении количество стало <= 0, то удаляем продукт из корзины
             if self.cart[product_id]["quantity"] <= 0:
@@ -107,6 +107,7 @@ class _Cart:
                 "quantity": quantity,
             }
         self.save()
+        print(f"Корзина после: {self.cart = }")
 
         return self.cart
 
