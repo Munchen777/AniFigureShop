@@ -3,19 +3,26 @@ from django.core.exceptions import MultipleObjectsReturned
 from django.db.models import Q
 
 
-UserModel = get_user_model()
-
-
 class UserModelBackend(ModelBackend):
-    """ Переопределение аутентификации """
+    """
+    Переопределение аутентификации
 
-    def authenticate(self, request, username=None, password=None, **kwargs):
+    Выполняем аутентификацию по никнэйму или по почте.
+    Если пользователя не существует возвращаем None.
+    Если найдено несколько пользователей, возвращаем,
+    выполнив фильтрацию по email
+
+    """
+
+    def authenticate(self, request, email=None, username=None, password=None, **kwargs):
+        UserModel = get_user_model()
+
         try:
-            user = UserModel.objects.get(Q(username=username) | Q(email__iexact=username))
+            user = UserModel.objects.get(Q(email=username or email) | Q(email=email))
         except UserModel.DoesNotExist:
             return None
         except MultipleObjectsReturned:
-            return UserModel.objects.filter(email=username).order_by('id').first()
+            return UserModel.objects.filter(email=email).order_by("pk").first()
         else:
             if user.check_password(password) and self.user_can_authenticate(user):
                 return user
