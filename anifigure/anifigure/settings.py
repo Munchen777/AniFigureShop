@@ -42,16 +42,18 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_extensions",
     "drf_spectacular",
+    
     # Apps
     "base.apps.BaseConfig",
     "users.apps.UsersConfig",
-    "api.apps.ApiConfig",
     "carts.apps.CartsConfig",
     "products.apps.ProductsConfig",
     "orders.apps.OrdersConfig",
+    
     # For REST
     "corsheaders",
     "rest_framework",
+    
     # JWT
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
@@ -167,10 +169,13 @@ LOGOUT_REDIRECT_URL = "main"
 # при аутентификации
 LOGIN_URL = "users:login"
 
-AUTH_USER_MODEL = "api.CustomUser"
+AUTH_USER_MODEL = "users.CustomUser"
 
 CART_SESSION_ID = "cart"
 
+####################################
+# SIMPLE JWT
+####################################
 SIMPLE_JWT = {
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
@@ -179,14 +184,20 @@ SIMPLE_JWT = {
     "TOKEN_OBTAIN_SERIALIZER": "api.serializers.MyTokenObtainPairView",
 }
 
-# CORS_ORIGIN_ALLOW_ALL = True
+####################################
+# CORS HEADERS
+####################################
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
 ]
 CORS_ALLOW_CREDENTIALS = True
+# CORS_ORIGIN_ALLOW_ALL = True
 # CORS_ALLOW_ALL_ORIGINS = True
 
+####################################
+# REST FRAMEWORK
+####################################
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
@@ -197,6 +208,9 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
+####################################
+# SPECTACULAR
+####################################
 SPECTACULAR_SETTINGS = {
     "TITLE": "My shop API",
     "DESCRIPTION": "Your project description",
