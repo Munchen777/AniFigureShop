@@ -1,45 +1,36 @@
-import React, { Component, Fragment, useEffect } from "react";
-import Header from './components/Header'
-import MainPage from './components/MainPage'
-import Footer from "./components/Footer";
-import ReactDom from 'react-dom/client'
-import './App.css';
-import {
-  BrowserRouter,
-  Route,
-  Routes,
-  createBrowserRouter,
-  Link
-  } from 'react-router-dom'
-import { Container } from "@mui/material";
-import axios from "axios";
-import LoginPage from './pages/LoginPage'
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import PrivateRoute from "./pages/PrivateRoute";
-
+import { AuthProvider } from "./contexts/AuthContext";
+import { CartProvider } from "./contexts/CartContext";
+import LoginForm from "./components/LoginForm";
+import RegisterForm from "./pages/RegisterForm";
+import ResetPasswordSuccess from "./components/ResetPasswordSuccess";
+import ResetPassword from "./components/ResetPassword";
+import PasswordResetForm from "./components/PasswordResetForm";
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={ <HomePage /> } />
-        <Route path="/login" element={ <LoginPage /> } />
-      </Routes>
-    </BrowserRouter>
-    // <Router>
-    //   <Routes>
-    //     <PrivateRoute component={ HomePage } path="/"></PrivateRoute>
-    //     <Route component={ LoginPage } path="/login"></Route>  
-    //   </Routes>
-    // </Router>
-    // <>
-    //   <Header />
-    //   <main>
-    //     <MainPage />
-    //   </main>
-    //   <footer>
-    //     <Footer />
-    //   </footer>
-    // </>
-  )
+    <Router>
+      <AuthProvider>
+        <CartProvider>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+
+            <Route element={<PrivateRoute />}>
+              {/* Другие защищенные маршруты можно добавлять внутри PrivateRoute */}
+            </Route>
+
+            <Route path="/login" element={<LoginForm />} />
+            <Route path="/register" element={<RegisterForm />} />
+            <Route path="/reset-password-success" element={<ResetPasswordSuccess />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/users/api/v1/reset-password-confirm/:uidb64/:token/" element={<PasswordResetForm />} />
+
+          </Routes>
+        </CartProvider>
+      </AuthProvider>
+    </Router>
+  );
 }
