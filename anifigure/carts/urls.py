@@ -1,15 +1,12 @@
 from django.urls import path
-from rest_framework import routers
 
-
-from .views import CartAddAPIView
-
+from .views import CartListView
+from .views import CartAPIView
 
 app_name = "carts"
 
-carts_router = routers.DefaultRouter()
-
 
 urlpatterns = [
-    
+    path("cart/get/", CartListView.as_view(), name="cart-get"),
+    path("cart/update/", CartAPIView.as_view(), name="cart-update"),
 ]

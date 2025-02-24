@@ -1,47 +1,23 @@
-from django.shortcuts import get_object_or_404
-from django.core.cache import cache
 from rest_framework import status
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
-from drf_spectacular.utils import extend_schema, extend_schema_view
+from drf_spectacular.utils import extend_schema
 
 from .cart import _Cart
-from products.serializers import ProductSerializer
-from products.models import Product
-from orders.models import OrderItem
-
-from .mixins import CartMixin
 from .serializers import CartSerializer
+from products.serializers import ProductSerializer
 
 
 @extend_schema(summary="Endpoint для работы с корзиной товаров")
 class CartAPIView(APIView):
     #authentication_classes = []
-    permission_classes = [AllowAny]
+    permission_classes = (AllowAny, )
 
     def post(self, request: Request) -> Response:
-        """
-        Обновляем корзину пользователя
-        Из запроса достаем product (товар), quantity (количество),
-        выполняем сериализацию, проверяем на валидность
-
-        Args:
-            request (Request): POST-запрос
-
-        """
-
-        """ 
-        1. Валидирую данные
-        2. Добавляю товар в корзину
-
-
-        """
         product = request.data.get("product")
         quantity = request.data.get("quantity")
-        print(request)
         serializer = ProductSerializer(data=product)
         serializer.is_valid(raise_exception=True)
 
