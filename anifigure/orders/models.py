@@ -86,7 +86,7 @@ class OrderItem(models.Model):
     )
     product = models.ForeignKey(
         Product, 
-        n_delete=models.SET_DEFAULT,
+        on_delete=models.SET_DEFAULT,
         default=None,
         null=True,
         verbose_name="Product",
