@@ -124,7 +124,7 @@ export const AuthProvider = ({ children }) => {
     console.log("Ответ:", response)
 
     if (response.status === 200) {
-      navigate("/reset-password-success")
+      navigate("/reset-password-done")
     }
     else {
       alert("Something went wrong!")
