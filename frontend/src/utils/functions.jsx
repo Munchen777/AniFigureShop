@@ -6,11 +6,10 @@ import AuthContext from "../contexts/AuthContext";
 export default async function makeRequest (url, method = "POST", data = {}, headers = {}) {
   try {
     const response = await axios({
-      url,
+      url: url,
       method,
       data,
       headers: headers,
-      timeout: 20000,
     });
 
     return response

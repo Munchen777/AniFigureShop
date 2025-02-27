@@ -10,9 +10,9 @@ export default function HomePage(params) {
       <AuthProvider>
         <Header />
         <Hero />
-        {/* <main>
+        <main>
           <MainPage />
-        </main> */}
+        </main>
         <Footer />
       </AuthProvider>
     </>

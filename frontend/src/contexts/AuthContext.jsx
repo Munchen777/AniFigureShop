@@ -24,18 +24,15 @@ export const AuthProvider = ({ children }) => {
 
   let loginUser = async (event) => {
     event.preventDefault();
-
-    let response = await axios({
-      url: `${ROOT_API}api/token/`,
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: {
+    try {
+      let response = await makeRequest(
+      `${ROOT_API}/api/token/`,
+      "POST",
+      {
         email: event.target.username.value,
         password: event.target.password.value,
       },
-    });
+    );
 
     let data = await response.data;
 
@@ -48,6 +45,10 @@ export const AuthProvider = ({ children }) => {
     } else {
       alert("Something went wrong!");
     }
+
+    } catch (error) {
+        console.log(error)
+    }
   };
 
   let registerUser = async (event) => {
@@ -55,7 +56,7 @@ export const AuthProvider = ({ children }) => {
 
     try {
       let response = await makeRequest(
-        `${ROOT_API}users/api/v1/register/`,
+        `${ROOT_API}/users/api/v1/register/`,
         "POST",
         {
           email: event.target.email.value,
@@ -69,9 +70,10 @@ export const AuthProvider = ({ children }) => {
       }
 
     } catch (error) {
-      console.log("Error while sending request to /users/api/v1/register/ endpoint")
+      console.log("Error while sending request to /users/api/v1/register/ endpoint");
+      console.log(error)
     }
-  }
+  };
 
   let logoutUser = () => {
     setAuthTokens(null);
@@ -115,7 +117,7 @@ export const AuthProvider = ({ children }) => {
     console.log(email)
 
     const response = await makeRequest(
-      `${ROOT_API}users/api/v1/reset-password/`,
+      `${ROOT_API}/users/api/v1/reset-password/`,
       "POST",
       {
         email: email,
