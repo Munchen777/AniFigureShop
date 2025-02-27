@@ -1,0 +1,60 @@
+version: '3.9'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: docker_settings/Backend/Dockerfile
+    env_file:
+      - .env
+    container_name: ${CONTAINER_APP_NAME}
+    depends_on:
+      anifigure_db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    restart: always
+    command:
+      sh -c "python /app/anifigure/manage.py makemigrations &&
+             python /app/anifigure/manage.py migrate &&
+             python /app/anifigure/manage.py collectstatic --noinput &&
+             cd ./anifigure &&
+             gunicorn --bind 0.0.0.0:8000 anifigure.wsgi:application"
+    volumes:
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+      - frontend_build:/app/frontend/build
+
+  anifigure_db:
+    image: postgres:16.0-alpine
+    env_file:
+      - .env
+    container_name: ${CONTAINER_DATABASE_NAME}
+    environment:
+      - POSTGRES_DB=${DB_USER}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+    volumes:
+      - ./db/:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d ${DB_NAME} -U ${DB_USER}" ]
+      interval: 10s
+      timeout: 10s
+      retries: 30
+    restart: always
+
+  frontend:
+    build:
+      context: .
+      dockerfile: docker_settings/Frontend/Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    volumes:
+      - frontend_build:/app/build
+
+volumes:
+  static_volume:
+  media_volume:
+  frontend_build:
