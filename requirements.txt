@@ -11,6 +11,7 @@ django-vite==3.0.4
 djangorestframework==3.15.1
 djangorestframework-simplejwt==5.3.1
 drf-spectacular==0.27.2
+gunicorn==23.0.0
 inflection==0.5.1
 jsonschema==4.23.0
 jsonschema-specifications==2023.12.1
@@ -20,6 +21,7 @@ pathspec==0.12.1
 pillow==10.2.0
 platformdirs==4.2.2
 psycopg==3.1.18
+psycopg2-binary==2.9.10
 pycparser==2.22
 PyJWT==2.9.0
 python-dotenv==1.0.1
