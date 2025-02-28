@@ -22,7 +22,7 @@ const ProductsComponent = () => {
 
       } catch (error) {
         console.log(
-          "Error while making POST Request to /cart/get endpoint",
+          "Error while making POST Request to /api/products/ endpoint",
           error
         );
       }
