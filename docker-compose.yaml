@@ -11,15 +11,12 @@ services:
     depends_on:
       anifigure_db:
         condition: service_healthy
+      frontend:
+        condition: service_completed_successfully
     ports:
       - "8000:8000"
     restart: always
-    command:
-      sh -c "python /app/anifigure/manage.py makemigrations &&
-             python /app/anifigure/manage.py migrate &&
-             python /app/anifigure/manage.py collectstatic --noinput &&
-             cd ./anifigure &&
-             gunicorn --bind 0.0.0.0:8000 anifigure.wsgi:application"
+    command: ["sh", "./config/app.sh"]
     volumes:
       - static_volume:/app/staticfiles
       - media_volume:/app/media
@@ -49,8 +46,6 @@ services:
       dockerfile: docker_settings/Frontend/Dockerfile
     ports:
       - "3000:3000"
-    depends_on:
-      - backend
     volumes:
       - frontend_build:/app/build
 
