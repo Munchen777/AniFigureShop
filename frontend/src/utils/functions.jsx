@@ -1,15 +1,19 @@
-import axios, { spread } from "axios";
+import axios from "axios";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../contexts/AuthContext";
 
 export default async function makeRequest (url, method = "POST", data = {}, headers = {}) {
+  console.log("Making request via makeRequest function ...")
   try {
     const response = await axios({
-      url: url,
+      url,
       method,
       data,
-      headers: headers,
+      headers: {
+        ...headers,
+        "Content-Type": "application/json"
+      },
     });
 
     return response
