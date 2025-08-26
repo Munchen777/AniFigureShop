@@ -2,14 +2,19 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
 COPY requirements.txt .
 
-COPY ../docker_settings/Backend/app.sh /app/config/app.sh
+RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
-RUN chmod +x ./config/app.sh
+COPY ./anifigure /app/anifigure
 
-RUN pip install --upgrade pip && pip install -r requirements.txt
+COPY ./docker_settings/Backend/app.sh /app/app.sh
 
-COPY . .
+RUN chmod +x /app/app.sh
+
+EXPOSE 8000
+
+ENTRYPOINT ["sh", "./app.sh"]
