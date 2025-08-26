@@ -1,18 +1,22 @@
 from django.urls import path
-from . import views
-from .views import GetCSRFToken
 
-app_name = 'users'
+from .views import RegisterAPIView
+from .views import RequestPasswordResetView
+from .views import RegisterTemplateView
+from .views import LoginTemplateView
+from .views import ResetPasswordConfirmTemplateView
+from .views import ResetPasswordChangeAPIView
+
+app_name = "users"
+
 
 urlpatterns = [
-    path("csrf_cookie/", GetCSRFToken.as_view()),
-    path("api/login/", views.LoginAPIView.as_view(), name="login"),
-    path("login/", views.LoginTemplateView.as_view()),    
-    path("logout/", views.logout_user, name="logout"),
-    path("registration/", views.RegisterUser.as_view(), name="registration"),
-    path("profile/", views.profile_user, name="profile"),
-
-    path("cart/", views.cart_items, name="cart"),
+    path("api/v1/register/", RegisterAPIView.as_view(), name="api-register"),
+    path("api/v1/reset-password/", RequestPasswordResetView.as_view(), name="reset-password"),
+    path("api/v1/reset-password-confirm/<str:uidb64>/<str:token>/", ResetPasswordConfirmTemplateView.as_view(), name="reset-password-confirm"),
+    path("api/v1/update-password/<str:uidb64>/", ResetPasswordChangeAPIView.as_view(), name="reset-password-change"),
+    
+    path("register/", RegisterTemplateView.as_view(), name="register-template"),
+    path("login/", LoginTemplateView.as_view(), name="login-template"),
 
 ]
-

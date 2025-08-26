@@ -10,7 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
+
+from dotenv import load_dotenv
 from pathlib import Path
+from datetime import timedelta
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,45 +25,71 @@ REAL_BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-0lbhieq*_4d0@(tvifm$ym+$f#bo3xig$2&d9)msv(oa)8^$o#'
+SECRET_KEY = str(os.getenv("SECRET_KEY"))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG", "0") == "1"
 
-ALLOWED_HOSTS = ["127.0.0.1"]
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS").split() or [
+    "localhost",
+    "127.0.0.1",
+    "0.0.0.0",
+]
 
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "django_extensions",
+    "drf_spectacular",
+    
+    # Apps
+    "base.apps.BaseConfig",
+    "users.apps.UsersConfig",
+    "carts.apps.CartsConfig",
+    "products.apps.ProductsConfig",
+    "orders.apps.OrdersConfig",
+    "banners.apps.BannersConfig",
+    
+    # For REST
+    "corsheaders",
+    "rest_framework",
+    
+    # JWT
+    "rest_framework_simplejwt",
+    "rest_framework_simplejwt.token_blacklist",
+]
 
-    'django_extensions',
-    'corsheaders',
-    'rest_framework',
-
-    'roulette.apps.RouletteConfig',
-    'order.apps.OrderConfig',
-    'products.apps.ProductsConfig',
-    'users.apps.UsersConfig',
+AUTHENTICATION_BACKENDS = [
+    "users.backends.UserModelBackend",
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = 'anifigure.urls'
+CACHES = {
+    "default": {
+        # "BACKEND": "django.core.cache.backends.dummy.DummyCache",
+        "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+        "LOCATION": "/var/tmp/django_cache",
+    },
+}
+CACHE_MIDDLEWARE_SECONDS = 200
+
+ROOT_URLCONF = "anifigure.urls"
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
@@ -78,35 +109,53 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(REAL_BASE_DIR, 'frontend', 'build')],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [
+            REAL_BASE_DIR / "frontend" / "build",
+        ],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'anifigure.wsgi.application'
+WSGI_APPLICATION = "anifigure.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'anifigureshop_db',
-        'USER': 'postgres',
-        'PASSWORD': 'MyMacM2',
-        'HOST': 'localhost',
-        'PORT': '5432',
+USE_POSTGRES = os.getenv("USE_POSTGRES", "0") == "1"
+DB_NAME = os.getenv("DB_NAME")
+DB_USER = os.getenv("DB_USER")
+DB_PASS = os.getenv("DB_PASS")
+DB_HOST = os.getenv("DB_HOST")
+DB_PORT = os.getenv("DB_PORT")
+CONTAINER_DATABASE_NAME = os.getenv("CONTAINER_DATABASE_NAME")
+
+if USE_POSTGRES:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": DB_NAME,
+            "USER": DB_USER,
+            "PASSWORD": DB_PASS,
+            "HOST": DB_HOST if DEBUG else CONTAINER_DATABASE_NAME, # container name for Docker Compose
+            "PORT": DB_PORT,
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 AUTHENTICATION_BACKENDS = [
     'users.backends.UserModelBackend',
@@ -117,25 +166,25 @@ AUTHENTICATION_BACKENDS = [
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'ru-ru'
+LANGUAGE_CODE = "ru-ru"
 
-TIME_ZONE = 'Europe/Moscow'
+TIME_ZONE = "Europe/Moscow"
 
 USE_I18N = True
 
@@ -144,27 +193,89 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(REAL_BASE_DIR, 'frontend', 'build', 'static')]
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "static"
 
+if os.getenv("DJANGO_RUNNING_IN_DOCKER", "0") == "1":
+    STATIC_URL = "/django-static/"
+    STATICFILES_DIRS = []
+else:
+    STATICFILES_DIRS = [
+        REAL_BASE_DIR / "frontend" / "build" / "static",
+    ]
 
-MEDIA_ROOT = BASE_DIR / 'images'
-MEDIA_URL = '/images/'
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # перенаправление после успешной аутентификации
 LOGIN_REDIRECT_URL = "main"
 # после логаута перенаправление на main
 LOGOUT_REDIRECT_URL = "main"
-# при аутентификации 
+# при аутентификации
 LOGIN_URL = "users:login"
 
-AUTH_USER_MODEL = "users.User"
-CSRF_COOKIE_HTTPONLY = False # CSRF будет доступен из JS
-SESSION_COOKIE_HTTPONLY = True # Кука с сессией не будет доступна
+AUTH_USER_MODEL = "users.CustomUser"
 
-# for Production
-# CSRF_COOKIE_HTTPONLY = True
-# SESSION_COOKIE_HTTPONLY = True
+CART_SESSION_ID = "cart"
+
+####################################
+# Email variables
+####################################
+EMAIL_BACKEND = "users.backends.EmailBackend"
+# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_PORT = 587
+EMAIL_HOST_USER = str(os.getenv("EMAIL_USER"))
+EMAIL_HOST_PASSWORD = str(os.getenv("EMAIL_PASSWORD"))
+
+####################################
+# SIMPLE JWT
+####################################
+SIMPLE_JWT = {
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=3),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=5),
+    "TOKEN_OBTAIN_SERIALIZER": "api.serializers.MyTokenObtainPairView",
+}
+
+####################################
+# CORS HEADERS
+####################################
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",
+    "http://localhost",
+    "http://127.0.0.1"
+]
+
+####################################
+# REST FRAMEWORK
+####################################
+REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 10,
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+####################################
+# SPECTACULAR
+####################################
+SPECTACULAR_SETTINGS = {
+    "TITLE": "My shop API",
+    "DESCRIPTION": "Your project description",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    # OTHER SETTINGS
+}

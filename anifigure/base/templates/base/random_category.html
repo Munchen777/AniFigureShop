@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+{% load static %}
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ title }}</title>
+    <link
+      rel="shortcut icon"
+      href='{% static "base/images/favicon.svg" %}'
+      type="image/x-icon"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"> -->
+    <!-- <link rel="stylesheet" href='{% static "base/css/tailwind.css" %}' /> -->
+    <link rel="stylesheet" href='{% static "base/css/output.css" %}' />
+    <link rel="stylesheet" href="{% static 'base/css/roulette.css' %}">
+
+
+    <script defer src='{% static "base/js/alpine.min.js" %} '></script>
+  </head>
+
+<style>
+  header {
+  position: fixed;
+  top: 0; /* Закрепить заголовок в самом верху страницы */
+
+  z-index: 9999;
+}
+</style>
+
+    <header id="header_id"
+      x-data="
+        {
+          navbarOpen: false
+        }
+      "
+      class="flex w-full items-center bg-white dark:bg-dark "
+    >
+      <div class="container mx-auto">
+        <div class="relative -mx-4 flex items-center justify-between">
+          <div class="w-60 max-w-full px-4">
+            <a href="{% url 'main' %}"  onclick="document.getElementById('header_id').scrollIntoView({ behavior: 'smooth' });" class="block w-full py-5">
+              <img
+                src='{% static "base/images/logo/logo.svg" %}'
+                alt="logo"
+                class="dark:hidden"
+              />
+              <img
+                src='{% static "base/images/logo/logo.svg" %}'
+                alt="logo"
+                class="hidden dark:block"
+              />
+            </a>
+          </div>
+          <div class="flex w-full items-center justify-between px-4">
+            <div>
+              <button
+                @click="navbarOpen = !navbarOpen"
+                :class="navbarOpen && 'navbarTogglerActive' "
+                id="navbarToggler"
+                class="absolute right-4 top-1/2 block -translate-y-1/2 rounded-lg px-3 py-[6px] ring-primary focus:ring-2 lg:hidden"
+              >
+                <span
+                  class="relative my-[6px] block h-[2px] w-[30px] bg-body-color dark:bg-white"
+                ></span>
+                <span
+                  class="relative my-[6px] block h-[2px] w-[30px] bg-body-color dark:bg-white"
+                ></span>
+                <span
+                  class="relative my-[6px] block h-[2px] w-[30px] bg-body-color dark:bg-white"
+                ></span>
+              </button>
+              <nav
+                :class="!navbarOpen && 'hidden' "
+                id="navbarCollapse"
+                class="absolute right-4 top-full w-full max-w-[250px] rounded-lg bg-white px-6 py-5 shadow dark:bg-dark-2 lg:static lg:block lg:w-full lg:max-w-full lg:shadow-none lg:dark:bg-transparent"
+              >
+                <ul class="block lg:flex">
+                  <li>
+                     <a href="{% url 'main' %}"
+                      class="flex py-2 text-base font-medium text-body-color hover:text-dark dark:text-dark-6 dark:hover:text-white lg:ml-12 lg:inline-flex"
+                    >
+                      Главная
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="{% url 'main' %}.#about_id"
+                      class="flex py-2 text-base font-medium text-body-color hover:text-dark dark:text-dark-6 dark:hover:text-white lg:ml-12 lg:inline-flex"
+                    >
+                      О нас
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="javascript:void(0)"
+                      class="flex py-2 text-base font-medium text-body-color hover:text-dark dark:text-dark-6 dark:hover:text-white lg:ml-12 lg:inline-flex"
+                    >
+                      Акции
+                    </a>
+                  </li>
+
+                </ul>
+              </nav>
+            </div>
+            <div class="justify-end pr-16 sm:flex lg:pr-0">
+           {% if user.is_authenticated %}
+              <a href="{% url 'users:profile' %}" class="hidden sm:flex items-center justify-center px-7 py-3 text-base font-medium text-dark hover:text-primary dark:text-white">
+                    {{ user.username }}
+              </a>
+<!--              <a-->
+<!--                href="{% url 'users:logout' %}"-->
+<!--                class="rounded-md bg-primary px-7 py-3 text-base font-medium text-white hover:bg-primary/90"-->
+<!--              >-->
+<!--                Выйти-->
+<!--              </a>-->
+             <div class="w-50 max-w-40 px-4">
+            <a href="{% url 'main' %}"  class="block w-full py-5">
+              <img
+                src='{% static "base/images/shopping_cart/shoppingcart.png" %}'
+                alt="logo"
+                class=""
+                style="max-width: 40px"
+              />
+            </a>
+          </div>
+              {% else %}
+
+              <a
+                href="{% url 'users:login' %}"
+                class="px-7 py-3 text-base font-medium text-dark hover:text-primary dark:text-white"
+              >
+                Вход
+              </a>
+              <a
+                href="{% url 'users:registration' %}"
+                class="hidden sm:flex rounded-md bg-primary px-7 py-3 text-base font-medium text-white hover:bg-primary/90"
+              >
+                Регистрация
+              </a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- ====== Navbar Section End -->
+
+
+{% block content %}
+
+
+
+
+<div class="containerr">
+  <h2 class="text-center py-10 text-5xl OurPrizes">Выигрывай бесплатные фигурки!</h2>
+  <div class="app">
+
+    <img class="pointer" src="{% static 'base/images/random_cat/pointer3.png' %}" alt=""/>
+    <div class="scope">
+         <ul class="list">
+
+            </ul>
+    </div>
+
+
+    <button onclick="start()" class="start">Крутить</button>
+</div>
+    <div class="container mx-auto">
+  <h2 class="text-center py-32 text-3xl OurPrizes">Наши призы:</h2>
+
+  <div class="-mx-4 flex flex-wrap">
+    <!-- ====== First block -->
+    <div class="w-1/2 px-4 md:w-1/2 xl:w-1/4 lg:w-1/6">
+      <div class="mb-10 overflow-hidden rounded-lg bg-white shadow-1 duration-300 hover:shadow-3 dark:bg-dark-2 dark:shadow-card dark:hover:shadow-3 w-full max-w-[400px]">
+        <img src="{% static 'base/images/random_cat/alishka.jpg' %}" alt="image" class="w-full max-w-[400px]">
+        <div class="p-8 text-center sm:p-9 md:p-7 xl:p-9">
+          <h3 class="mb-4 block text-xl font-semibold text-dark hover:text-primary dark:text-white sm:text-[22px] md:text-xl lg:text-[22px] xl:text-xl 2xl:text-[22px]">
+            Скидка
+          </h3>
+          <p class="mb-7 text-base leading-relaxed text-body-color dark:text-dark-6">
+            Скидка 10% на всё
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== Second block -->
+    <div class="w-1/2 px-4 md:w-1/2 xl:w-1/4 lg:w-1/6">
+      <div class="mb-10 overflow-hidden rounded-lg bg-white shadow-1 duration-300 hover:shadow-3 dark:bg-dark-2 dark:shadow-card dark:hover:shadow-3 w-full max-w-[400px]">
+        <img src="{% static 'base/images/random_cat/alishka.jpg' %}" alt="image" class="w-full max-w-[400px]">
+        <div class="p-8 text-center sm:p-9 md:p-7 xl:p-9">
+          <h3 class="mb-4 block text-xl font-semibold text-dark hover:text-primary dark:text-white sm:text-[22px] md:text-xl lg:text-[22px] xl:text-xl 2xl:text-[22px]">
+            СкидкаX20
+          </h3>
+          <p class="mb-7 text-base leading-relaxed text-body-color dark:text-dark-6">
+            Скидка 20% на всё
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== Third block -->
+    <div class="w-1/2 px-4 md:w-1/2 xl:w-1/4 lg:w-1/6">
+      <div class="mb-10 overflow-hidden rounded-lg bg-white shadow-1 duration-300 hover:shadow-3 dark:bg-dark-2 dark:shadow-card dark:hover:shadow-3 w-full max-w-[400px]">
+        <img src="{% static 'base/images/random_cat/alishka.jpg' %}" alt="image" class="w-full max-w-[400px]">
+        <div class="p-8 text-center sm:p-9 md:p-7 xl:p-9">
+          <h3 class="mb-4 block text-xl font-semibold text-dark hover:text-primary dark:text-white sm:text-[22px] md:text-xl lg:text-[22px] xl:text-xl 2xl:text-[22px]">
+            СкидкаX30
+          </h3>
+          <p class="mb-7 text-base leading-relaxed text-body-color dark:text-dark-6">
+            Скидка 30% на всё
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== Fourth block -->
+    <div class="w-1/2 px-4 md:w-1/2 xl:w-1/4 lg:w-1/6">
+      <div class="mb-10 overflow-hidden rounded-lg bg-white shadow-1 duration-300 hover:shadow-3 dark:bg-dark-2 dark:shadow-card dark:hover:shadow-3 w-full max-w-[400px]">
+        <img src="{% static 'base/images/random_cat/figurka.jpg' %}" alt="image" class="w-full max-w-[400px]">
+        <div class="p-8 text-center sm:p-9 md:p-7 xl:p-9">
+          <h3 class="mb-4 block text-xl font-semibold text-dark hover:text-primary dark:text-white sm:text-[22px] md:text-xl lg:text-[22px] xl:text-xl 2xl:text-[22px]">
+            Фигурка
+          </h3>
+          <p class="mb-7 text-base leading-relaxed text-body-color dark:text-dark-6">
+            Фигурка до 3000р
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== Fiveth block -->
+    <div class="w-1/2 px-4 md:w-1/2 xl:w-1/4 lg:w-1/6">
+      <div class="mb-10 overflow-hidden rounded-lg bg-white shadow-1 duration-300 hover:shadow-3 dark:bg-dark-2 dark:shadow-card dark:hover:shadow-3 w-full max-w-[400px]">
+        <img src="{% static 'base/images/random_cat/bigfigurka.jpg' %}" alt="image" class="w-full max-w-[400px]">
+        <div class="p-8 text-center sm:p-9 md:p-7 xl:p-9">
+          <h3 class="mb-4 block text-xl font-semibold text-dark hover:text-primary dark:text-white sm:text-[22px] md:text-xl lg:text-[22px] xl:text-xl 2xl:text-[22px]">
+            ФигуркаX5
+          </h3>
+          <p class="mb-7 text-base leading-relaxed text-body-color dark:text-dark-6">
+            Фигурка до 5000р
+          </p>
+        </div>
+      </div>
+    </div>
+
+
+</div>
+
+
+
+    </div>
+
+</div>
+
+
+
+{% endblock %}
+<script>
+const cells = 31
+
+// From 0.001 to 100
+const items = [
+  {name: 'Скидка', img: "{% static 'base/images/random_cat/alishka.jpg' %}", chance: 43},
+  {name: 'СкидкаX20', img: "{% static 'base/images/random_cat/alishka.jpg' %}", chance: 32},
+  {name: 'СкидкаX30', img: "{% static 'base/images/random_cat/alishka.jpg' %}", chance: 15},
+  {name: 'Фигурка', img: "{% static 'base/images/random_cat/figurka.jpg' %}", chance: 7},
+  {name: 'Фигурка', img: "{% static 'base/images/random_cat/bigfigurka.jpg' %}", chance: 3}
+]
+
+function getItem() {
+  const totalChance = items.reduce((acc, item) => acc + item.chance, 0);
+  let randomNum = Math.floor(Math.random() * totalChance);
+
+  for (const item of items) {
+    if (randomNum < item.chance) {
+      return item;
+    }
+    randomNum -= item.chance;
+  }
+}
+
+function generateItems() {
+  document.querySelector('.list').remove()
+  document.querySelector('.scope').innerHTML = `
+    <ul class="list"></ul>
+  `
+
+  const list = document.querySelector('.list')
+
+  for (let i = 0; i < cells; i++) {
+    const item = getItem()
+
+    const li = document.createElement('li')
+    li.setAttribute('data-item', JSON.stringify(item))
+    li.classList.add('list__item')
+    li.innerHTML = `
+      <img src="${item.img}" alt="" />
+    `
+
+    list.append(li)
+  }
+}
+
+generateItems()
+
+let isStarted = false
+let isFirstStart = true
+
+function start() {
+  if (isStarted) return
+  else isStarted = true
+
+  if (!isFirstStart) generateItems()
+  else isFirstStart = false
+  const list = document.querySelector('.list')
+
+  setTimeout(() => {
+    list.style.left = '50%'
+    list.style.transform = 'translate3d(-50%, 0, 0)'
+  }, 0)
+
+  const item = list.querySelectorAll('li')[15]
+
+  list.addEventListener('transitionend', () => {
+    isStarted = false
+    item.classList.add('active')
+
+    const data = JSON.parse(item.getAttribute('data-item'));
+    console.log(data); //выводит словарь {"f":"ff"}
+
+    // тут написан AJAX запрос в наш сервер чтобы сохранить выпавший в рулетке бонус
+    fetch('save_bonus/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': "{{ csrf_token }}",
+      },
+      body: JSON.stringify(data),
+    })
+    // .then(response => response.json())
+    // .then(data => console.log(data))
+    // .catch(error => console.error('Error:', error));
+
+
+  }, {once: true})
+}
+
+
+
+
+
+
+</script>
+
+
+
+
+
+
+{% include 'footer.html' %}
+

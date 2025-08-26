@@ -1,0 +1,70 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: docker_settings/Backend/Dockerfile
+    env_file:
+      - .env
+    container_name: backend
+    command: [ "app" ]
+    restart: always
+    ports:
+      - "8001:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      - anifigure_db
+    volumes:
+      - media_volume:/app/anifigure/media
+      - static_volume:/app/anifigure/static
+    networks:
+      default:
+        aliases:
+          - backend
+
+  anifigure_db:
+    image: postgres:16.0-alpine
+    env_file:
+      - .env
+    container_name: database
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d ${DB_NAME} -U ${DB_USER}" ]
+      interval: 10s
+      timeout: 10s
+      retries: 30
+    restart: always
+    networks:
+      - default
+
+  nginx:
+    build:
+      context: .
+      dockerfile: docker_settings/Frontend/Dockerfile
+    container_name: nginx
+    env_file:
+      - .env
+    ports:
+      - "80:80"
+    restart: always
+    depends_on:
+      - backend
+    volumes:
+      - static_volume:/app/static:ro
+      - media_volume:/app/media:ro
+    networks:
+      - default
+
+volumes:
+  media_volume:
+  static_volume:
+
+networks:
+  default:
+    driver: bridge
