@@ -4,10 +4,10 @@ export default function Hero() {
       <section className="mx-auto container bg-zinc-200 py-20 mt-10 rounded-2xl drop-shadow-2xl">
         <div className="container mx-auto px-6 text-center lg:text-left">
           <h1 className="text-4xl font-bold text-black sm:text-5xl lg:text-6xl">
-            Digital IT
+            Интернет-магазин
           </h1>
           <p className="mt-4 text-lg text-gray-800 font-semibold sm:max-w-xl lg:max-w-2xl">
-            Приветствуем вас в нашем магазине цифровых товаров!
+            Приветствуем вас в нашем магазине! У нас вы найдете "море" электроники по приятным ценам.
           </p>
         </div>
       </section>

@@ -1,12 +1,13 @@
 import { Component, useEffect, useState, useContext } from "react";
 import { ROOT_API } from "../index";
 import ProductCard from "./ProductCard";
+import BannersComponent from "./BannersComponent";
 import { useRequest } from "../utils/functions";
-import { useCart } from "../contexts/CartContext";
+import CartContext from "../contexts/CartContext";
 
 const ProductsComponent = () => {
   const { sendRequest } = useRequest();
-  const { fetchCart } = useCart();
+  const { fetchCart } = useContext(CartContext);
 
   const [products, setProducts] = useState([]);
 
@@ -14,7 +15,7 @@ const ProductsComponent = () => {
     const fetchData = async () => {
       try {
         // Запрос на получение списка продуктов
-        const productsResponse = await sendRequest(`${ROOT_API}/api/products/`, "GET");
+        const productsResponse = await sendRequest(`${ROOT_API}/products/`, "GET");
         console.log("Ответ от эндпоинта /api/products/", productsResponse)
         setProducts(productsResponse.data.results);
 
@@ -46,7 +47,10 @@ const ProductsComponent = () => {
 class MainPage extends Component {
   render() {
     return (
-      <ProductsComponent />
+      <main>
+        <BannersComponent />
+        <ProductsComponent />
+      </main>
     );
   }
 }

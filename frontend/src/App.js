@@ -13,25 +13,32 @@ import PasswordResetForm from "./components/PasswordResetForm";
 export default function App() {
   return (
     <Router>
-      <AuthProvider>
+    <AuthProvider>
         <CartProvider>
-          <Routes>
+        <Routes>
             <Route path="/" element={<HomePage />} />
 
             <Route element={<PrivateRoute />}>
-              {/* Другие защищенные маршруты можно добавлять внутри PrivateRoute */}
+                <Route
+                path="/reset-password-done"
+                element={<ResetPasswordDone />}
+                />
+                <Route
+                path="/reset-password-success"
+                element={<ResetPasswordSuccess />}
+                />
+                <Route
+                path="/api/v1/reset-password-confirm/:uidb64/:token/"
+                element={<PasswordResetForm />}
+                />
             </Route>
 
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
-            <Route path="/reset-password-done" element={<ResetPasswordDone />} />
-            <Route path="/reset-password-success" element={<ResetPasswordSuccess />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/users/api/v1/reset-password-confirm/:uidb64/:token/" element={<PasswordResetForm />} />
-
-          </Routes>
+        </Routes>
         </CartProvider>
-      </AuthProvider>
+    </AuthProvider>
     </Router>
   );
 }

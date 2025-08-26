@@ -16,7 +16,7 @@ const PasswordResetForm = () => {
     const checkToken = async () => {
       try {
         let response = await makeRequest(
-          `${ROOT_API}users/api/v1/reset-password-confirm/${uidb64}/${token}`,
+          `${ROOT_API}/reset-password-confirm/${uidb64}/${token}/`,
           "GET",
         );
 
@@ -42,7 +42,7 @@ const PasswordResetForm = () => {
 
     try {
         let response = await makeRequest(
-            `${ROOT_API}users/api/v1/update-password/${uidb64}/`,
+            `${ROOT_API}/update-password/${uidb64}/`,
             "POST",
             {
                 "password1": password,

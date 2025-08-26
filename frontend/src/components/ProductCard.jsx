@@ -1,8 +1,8 @@
-import { useCart } from "../contexts/CartContext";
+import { useContext } from "react";
+import CartContext from "../contexts/CartContext";
 
 const ProductCard = ({ product }) => {
-  const { quantities, handleBuyClick, handleIncrement, handleDecrement } =
-    useCart();
+  const { quantities, handleBuyClick, handleIncrement, handleDecrement } = useContext(CartContext);
 
   return (
     <div key={product.pk} className="flex-col">
@@ -27,27 +27,27 @@ const ProductCard = ({ product }) => {
         </div>
         <div className="flex justify-around">
           <div>
-            <span className="font-sans">{product.price} Рублей</span>
+            <span className="font-sans font-bold">{product.price}</span>
           </div>
           <div>
             {!quantities[product.pk] ? (
               <button
-                className="relative px-6 py-3 font-bold text-white bg-gradient-to-r from-pink-500 to-yellow-500 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 hover:from-yellow-500 hover:to-pink-500 hover:shadow-2xl"
+                className="relative px-6 py-3 font-bold text-white bg-gradient-to-r from-stone-300 to-slate-700 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 hover:from-stone-500 hover:to-slate-900 hover:shadow-2xl"
                 onClick={() => handleBuyClick(product)}
               >
-                <span className="text-white font-sans">Купить</span>
+                <span className="text-white font-sans">В корзину</span>
               </button>
             ) : (
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-3">
                 <button
-                  className="bg-gray-300 hover:bg-gray-400 p-2 rounded-md"
+                  className="px-3 bg-zinc-300 hover:bg-zinc-400 p-2 rounded-2xl"
                   onClick={() => handleDecrement(product)}
                 >
                   <span className="text-black font-sans">-1</span>
                 </button>
-                <span className="font-sans">{quantities[product.pk]}</span>
+                <span className="font-sans font-bold">{quantities[product.pk]}</span>
                 <button
-                  className="bg-gray-300 hover:bg-gray-400 p-2 rounded-md"
+                  className="px-3 bg-zinc-300 hover:bg-zinc-400 p-2 rounded-2xl"
                   onClick={() => handleIncrement(product)}
                 >
                   <span className="text-black font-sans">+1</span>

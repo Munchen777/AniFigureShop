@@ -1,4 +1,5 @@
 import { Component } from "react";
+import { Link } from "react-router-dom";
 
 class Footer extends Component {
   render() {
@@ -6,21 +7,12 @@ class Footer extends Component {
       <footer className="bg-white">
         <div className="mx-auto max-w-screen-xl px-4 pb-8 pt-16 sm:px-6 lg:px-8 lg:pt-24">
           <div className="text-center">
-            {/* <h2 className="text-3xl font-extrabold text-gray-900 sm:text-5xl">
-              Customise Your Product
-            </h2> */}
-
-            {/* <p className="mx-auto mt-4 max-w-sm text-gray-500">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cum
-              maiores ipsum eos temporibus ea nihil.
-            </p> */}
-
-            <a
-              href="#"
-              className="mt-8 inline-block rounded-full border border-indigo-600 px-12 py-3 text-sm font-medium text-indigo-600 hover:bg-indigo-600 hover:text-white focus:outline-none focus:ring active:bg-indigo-500"
+            <Link
+              to="/catalog"
+              className="mt-8 inline-block rounded-full border border-zinc-700 px-12 py-3 text-sm font-medium text-stone-700 hover:bg-neutral-700 hover:text-white focus:outline-none focus:ring active:bg-slate-400"
             >
               Перейти в каталог
-            </a>
+            </Link>
           </div>
 
           <div className="mt-16 border-t border-gray-100 pt-8 sm:flex sm:items-center sm:justify-between lg:mt-24">
@@ -30,8 +22,7 @@ class Footer extends Component {
                   href="#"
                   className="text-gray-500 transition hover:opacity-75"
                 >
-                  {" "}
-                  Terms & Conditions{" "}
+                  Terms & Conditions
                 </a>
               </li>
 
@@ -40,8 +31,7 @@ class Footer extends Component {
                   href="#"
                   className="text-gray-500 transition hover:opacity-75"
                 >
-                  {" "}
-                  Privacy Policy{" "}
+                  Privacy Policy
                 </a>
               </li>
 
@@ -50,8 +40,7 @@ class Footer extends Component {
                   href="#"
                   className="text-gray-500 transition hover:opacity-75"
                 >
-                  {" "}
-                  Cookies{" "}
+                  Cookies
                 </a>
               </li>
             </ul>

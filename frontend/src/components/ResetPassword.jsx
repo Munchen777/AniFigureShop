@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import AuthContext from "../contexts/AuthContext";
 
 const ResetPassword = () => {
-	const { resetPassword } = useContext(AuthContext);
+  const { resetPassword } = useContext(AuthContext);
 
   const [email, setEmail] = useState("");
 

@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }) => {
     event.preventDefault();
     try {
       let response = await makeRequest(
-      `${ROOT_API}/api/token/`,
+      `${ROOT_API}/token/`,
       "POST",
       {
         email: event.target.username.value,
@@ -56,7 +56,7 @@ export const AuthProvider = ({ children }) => {
 
     try {
       let response = await makeRequest(
-        `${ROOT_API}/users/api/v1/register/`,
+        `${ROOT_API}/register/`,
         "POST",
         {
           email: event.target.email.value,
@@ -70,7 +70,7 @@ export const AuthProvider = ({ children }) => {
       }
 
     } catch (error) {
-      console.log("Error while sending request to /users/api/v1/register/ endpoint");
+      console.log("Error while sending request to api/v1/register/ endpoint");
       console.log(error)
     }
   };
@@ -79,7 +79,7 @@ export const AuthProvider = ({ children }) => {
     setAuthTokens(null);
     setUser(null);
     localStorage.removeItem("authTokens");
-    navigate("/"); // navigate("/login")
+    navigate("/");
   };
 
   let refreshTokens = async () => {
@@ -89,7 +89,7 @@ export const AuthProvider = ({ children }) => {
     let refreshToken = JSON.parse(authTokens).refresh;
 
     const response = await axios({
-      url: `${ROOT_API}/api/token/refresh/`,
+      url: `${ROOT_API}/token/refresh/`,
       method: "POST",
       data: {
         "refresh": refreshToken
@@ -117,7 +117,7 @@ export const AuthProvider = ({ children }) => {
     console.log(email)
 
     const response = await makeRequest(
-      `${ROOT_API}/users/api/v1/reset-password/`,
+      `${ROOT_API}/reset-password/`,
       "POST",
       {
         email: email,
