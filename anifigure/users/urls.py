@@ -11,10 +11,10 @@ app_name = "users"
 
 
 urlpatterns = [
-    path("users/api/v1/register/", RegisterAPIView.as_view(), name="api-register"),
-    path("users/api/v1/reset-password/", RequestPasswordResetView.as_view(), name="reset-password"),
-    path("users/api/v1/reset-password-confirm/<str:uidb64>/<str:token>/", ResetPasswordConfirmTemplateView.as_view(), name="reset-password-confirm"),
-    path("users/api/v1/update-password/<str:uidb64>/", ResetPasswordChangeAPIView.as_view(), name="reset-password-change"),
+    path("api/v1/register/", RegisterAPIView.as_view(), name="api-register"),
+    path("api/v1/reset-password/", RequestPasswordResetView.as_view(), name="reset-password"),
+    path("api/v1/reset-password-confirm/<str:uidb64>/<str:token>/", ResetPasswordConfirmTemplateView.as_view(), name="reset-password-confirm"),
+    path("api/v1/update-password/<str:uidb64>/", ResetPasswordChangeAPIView.as_view(), name="reset-password-change"),
     
     path("register/", RegisterTemplateView.as_view(), name="register-template"),
     path("login/", LoginTemplateView.as_view(), name="login-template"),

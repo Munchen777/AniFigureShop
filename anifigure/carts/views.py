@@ -21,6 +21,7 @@ class CartAPIView(APIView):
         serializer = ProductSerializer(data=product)
         serializer.is_valid(raise_exception=True)
 
+        print(f"{quantity=}")
         cart = _Cart(request)
         cart_with_products = cart.add(
             serializer=serializer,

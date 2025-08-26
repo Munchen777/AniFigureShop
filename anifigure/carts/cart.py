@@ -2,6 +2,7 @@ from collections import defaultdict
 from django.conf import settings
 from django.db import transaction
 from django.db.models import QuerySet
+from django.contrib.auth.models import User
 from django.contrib.sessions.models import Session
 from rest_framework.request import Request
 from typing import List
@@ -22,7 +23,7 @@ class _Cart:
 
     """
     def __init__(self, request: Request):
-        self.user = request.user
+        self.user: User = request.user
         self.queryset = None
         self.use_database: bool = False
         self.session: Session = request.session
@@ -112,25 +113,30 @@ class _Cart:
         serializer: ProductSerializer,
         quantity: int = 1,
     ):
-        product_pk = str(serializer.data["pk"])
+        product_pk = serializer.data["pk"]
+        product_pk_str: str = str(serializer.data["pk"])
         product = Product.objects.get(pk=product_pk)
 
         if self.use_database:
-            cart, created = Cart.objects.get_or_create(
-                user=self.user,
-                product=product,
-            )
+            try:
+                cart = Cart.objects.get(
+                    user=self.user,
+                    product=product,
+                )
+            except Cart.DoesNotExist:
+                cart = Cart.objects.create(
+                    user=self.user,
+                    product=product,
+                )
+
             # Если кол-во товара <= 0
             if quantity <= 0:
                 cart.delete()
 
             # Если корзина не была создана, то обновляем количество
-            else: # if not created
+            else:
                 cart.quantity = quantity
                 cart.save()
-
-            # else:
-            #     cart.save()
 
             self.queryset = Cart.objects.filter(user=self.user)
             self.cart = self.get_cart_from_database(self.queryset)
@@ -155,15 +161,6 @@ class _Cart:
 
     def get_cart(self):
         return self.cart
-        if self.user.is_authenticated:
-            # Получаем корзину пользователя
-            return self.cart
-            # cart = Cart.objects.get(user=self.user)
-            # cart_products = cart.products.all()
-            # print(cart_products)
-        
-        else:
-            return self.cart
 
     def clear(self, only_session):
         if only_session:

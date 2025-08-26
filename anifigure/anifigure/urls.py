@@ -16,10 +16,11 @@ urlpatterns = [
     path("", include("users.urls", namespace="users")),
     path("", include("carts.urls")),
     path("", include("products.urls")),
+    path("", include("banners.urls")),
     
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
-    path('api/token/', MyTokenObtainPairView.as_view(), name='token_obtain'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/v1/token/', MyTokenObtainPairView.as_view(), name='token_obtain'),
+    path('api/v1/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
     path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),

@@ -7,6 +7,6 @@ app_name = "carts"
 
 
 urlpatterns = [
-    path("cart/get/", CartListView.as_view(), name="cart-get"),
-    path("cart/update/", CartAPIView.as_view(), name="cart-update"),
+    path("api/v1/cart/get/", CartListView.as_view(), name="cart-get"),
+    path("api/v1/cart/update/", CartAPIView.as_view(), name="cart-update"),
 ]

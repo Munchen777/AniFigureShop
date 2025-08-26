@@ -30,7 +30,7 @@ SECRET_KEY = str(os.getenv("SECRET_KEY"))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "0") == "1"
 
-ALLOWED_HOSTS = [
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS").split() or [
     "localhost",
     "127.0.0.1",
     "0.0.0.0",
@@ -120,6 +120,7 @@ DB_USER = os.getenv("DB_USER")
 DB_PASS = os.getenv("DB_PASS")
 DB_HOST = os.getenv("DB_HOST")
 DB_PORT = os.getenv("DB_PORT")
+CONTAINER_DATABASE_NAME = os.getenv("CONTAINER_DATABASE_NAME")
 
 if USE_POSTGRES:
     DATABASES = {
@@ -128,7 +129,7 @@ if USE_POSTGRES:
             "NAME": DB_NAME,
             "USER": DB_USER,
             "PASSWORD": DB_PASS,
-            "HOST": os.getenv("CONTAINER_DATABASE_NAME"), # container name for Docker Compose
+            "HOST": DB_HOST if DEBUG else CONTAINER_DATABASE_NAME, # container name for Docker Compose
             "PORT": DB_PORT,
         }
     }
@@ -173,10 +174,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [
-    REAL_BASE_DIR / "frontend" / "build" / "static",
-]
-STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_ROOT = BASE_DIR / "static"
+
+if os.getenv("DJANGO_RUNNING_IN_DOCKER", "0") == "1":
+    STATIC_URL = "/django-static/"
+    STATICFILES_DIRS = []
+else:
+    STATICFILES_DIRS = [
+        REAL_BASE_DIR / "frontend" / "build" / "static",
+    ]
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
@@ -213,8 +219,8 @@ EMAIL_HOST_PASSWORD = str(os.getenv("EMAIL_PASSWORD"))
 SIMPLE_JWT = {
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
-    "ACCESS_TOKEN_LIFETIME": timedelta(seconds=30),
-    "REFRESH_TOKEN_LIFETIME": timedelta(minutes=1),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=3),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=5),
     "TOKEN_OBTAIN_SERIALIZER": "api.serializers.MyTokenObtainPairView",
 }
 
@@ -224,8 +230,11 @@ SIMPLE_JWT = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",
+    "http://localhost",
+    "http://127.0.0.1"
 ]
-# CORS_ALLOW_CREDENTIALS = True
 
 ####################################
 # REST FRAMEWORK

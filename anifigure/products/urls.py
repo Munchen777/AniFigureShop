@@ -5,6 +5,6 @@ app_name = "products"
 
 
 urlpatterns = [
-    path("api/products/", ProductsViewSet.as_view({"get": "list"}), name="products"),
-    path("api/categories/", CategoryViewSet.as_view({"get": "list"}), name="categories"),
+    path("api/v1/products/", ProductsViewSet.as_view({"get": "list"}), name="products"),
+    path("api/v1/categories/", CategoryViewSet.as_view({"get": "list"}), name="categories"),
 ]
