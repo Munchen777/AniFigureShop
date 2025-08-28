@@ -29,3 +29,6 @@ class Banner(models.Model):
         blank=True,
         verbose_name="End date",
     )
+
+    def __str__(self) -> str:
+        return f"Banner {self.pk}"

@@ -16,7 +16,10 @@ class ProductImageInline(admin.TabularInline):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['name', 'description', 'slug', 'order']
-    inlines = [ProductImageInline]
+    list_display = ["pk", "name", "description", "discount", "price"]
+    list_display_links = ["pk", "name", "description", "price",]
+    inlines = [
+        ProductInline
+    ]
 
 # Register your models here.

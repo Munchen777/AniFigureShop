@@ -1,4 +1,4 @@
-import React, { Component, useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 
 import { Link } from "react-router-dom";
 import AuthContext from "../contexts/AuthContext";
@@ -16,10 +16,10 @@ export default function Header() {
   return (
     <header className="bg-white">
       <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
-        <div className="flex lg:flex-1 w-6 h-6">
+        <div className="flex lg:flex-1 w-6 h-6 justify-start">
           <svg
-            width="100%"
-            height="100%"
+            width="48px"
+            height="48px"
             viewBox="0 0 59 36"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -76,9 +76,14 @@ export default function Header() {
         </div>
 
         <div className="hidden lg:flex lg:flex-1  relative lg:justify-evenly items-center">
-          <div className="flex relative">
-            <Link to={"/cart"}>
+          <div className="flex">
+            <Link to={"/cart"} className="relative inline-block">
               <PiShoppingCartDuotone className="w-5 h-5" />
+              {totalCount > 0 && (
+                <span className="absolute -top-1 -right-1 min-w-4 h-4 px-1 rounded-full bg-red-500 text-white text-[10px] leading-4 text-center">
+                  {totalCount}
+                </span>
+              )}
             </Link>
           </div>
           {user ? (
