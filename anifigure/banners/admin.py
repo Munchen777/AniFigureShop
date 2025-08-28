@@ -16,6 +16,7 @@ def make_banner_inactive(modeladmin, request, queryset):
 @admin.register(Banner)
 class BannerAdmin(admin.ModelAdmin):
     list_display = [
+        "pk",
         "content",
         "is_active",
         "start_date",
