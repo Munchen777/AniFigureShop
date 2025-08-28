@@ -8,15 +8,14 @@ from drf_spectacular.views import (SpectacularAPIView,
                                    SpectacularSwaggerView)
 
 from users.serializers import MyTokenObtainPairView
-from base.views import page_not_found
 
 
 urlpatterns = [
     path("", include("base.urls", namespace="base")),
     path("", include("users.urls", namespace="users")),
-    path("", include("carts.urls")),
-    path("", include("products.urls")),
-    path("", include("banners.urls")),
+    path("", include("carts.urls", namespace="carts")),
+    path("", include("products.urls", namespace="products")),
+    path("", include("banners.urls", namespace="banners")),
     
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/v1/token/', MyTokenObtainPairView.as_view(), name='token_obtain'),
@@ -31,5 +30,3 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-handler404 = page_not_found
