@@ -5,7 +5,7 @@ import BannersComponent from "./BannersComponent";
 import { useRequest } from "../utils/functions";
 import CartContext from "../contexts/CartContext";
 
-const ProductsComponent = () => {
+export const ProductsComponent = () => {
   const { sendRequest } = useRequest();
   const { fetchCart } = useContext(CartContext);
 
@@ -49,7 +49,7 @@ class MainPage extends Component {
     return (
       <main>
         <BannersComponent />
-        <ProductsComponent />
+        {/* <ProductsComponent /> */}
       </main>
     );
   }

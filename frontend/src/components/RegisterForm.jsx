@@ -34,7 +34,7 @@ const RegisterForm = () => {
         <div class="my-auto mb-auto mt-8 flex flex-col md:mt-[70px] w-[350px] max-w-[450px] mx-auto md:max-w-[450px] lg:mt-[130px] lg:max-w-[450px]">
           <p class="text-[32px] font-bold text-white">Register</p>
           <p class="mb-2.5 mt-2.5 font-normal text-zinc-400">
-            Enter your email and password to sign in!
+            Enter your email and password to register!
           </p>
           <div class="relative my-4">
             <div class="relative flex items-center py-1">
@@ -78,7 +78,7 @@ const RegisterForm = () => {
                   class="whitespace-nowrap ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-white text-zinc-950 hover:bg-white/90 active:bg-white/80 flex w-full max-w-full mt-6 items-center justify-center rounded-lg px-4 py-4 text-base font-medium"
                   type="submit"
                 >
-                  Sign in
+                  Sign up
                 </button>
               </div>
             </form>

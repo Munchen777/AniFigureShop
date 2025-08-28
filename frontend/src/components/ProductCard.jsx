@@ -22,32 +22,32 @@ const ProductCard = ({ product }) => {
         <div className="block-inline mx-1 sm:mx-2">
           <h4 className="font-sans text-xl">{product.name}</h4>
         </div>
-        <div className="block-inline mx-1 sm:mx-2">
-          <span className="font-sans">{product.description}</span>
+        <div className="block-inline mx-1 sm:mx-2 max-h-16 overflow-auto">
+          <span className="font-sans max-w  max-h-16 overflow-auto">{product.description}</span>
         </div>
         <div className="flex justify-around">
           <div>
-            <span className="font-sans font-bold">{product.price}</span>
+            <span className="font-sans font-bold">{product.price} {product?.currency}</span>
           </div>
           <div>
             {!quantities[product.pk] ? (
               <button
-                className="relative px-6 py-3 font-bold text-white bg-gradient-to-r from-stone-300 to-slate-700 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 hover:from-stone-500 hover:to-slate-900 hover:shadow-2xl"
+                className="mt-8 inline-block rounded-full border border-zinc-700 px-12 py-3 text-sm font-medium text-stone-700 hover:bg-neutral-700 hover:text-white focus:outline-none focus:ring active:bg-slate-400"
                 onClick={() => handleBuyClick(product)}
               >
-                <span className="text-white font-sans">В корзину</span>
+                <span className="text-black font-sans">В корзину</span>
               </button>
             ) : (
               <div className="flex items-center space-x-3">
                 <button
-                  className="px-3 bg-zinc-300 hover:bg-zinc-400 p-2 rounded-2xl"
+                  className="mt-8 inline-block rounded-full border border-zinc-700 px-6 py-3 text-sm font-medium text-stone-700 hover:bg-neutral-700 hover:text-white focus:outline-none focus:ring active:bg-slate-400"
                   onClick={() => handleDecrement(product)}
                 >
                   <span className="text-black font-sans">-1</span>
                 </button>
                 <span className="font-sans font-bold">{quantities[product.pk]}</span>
                 <button
-                  className="px-3 bg-zinc-300 hover:bg-zinc-400 p-2 rounded-2xl"
+                  className="mt-8 inline-block rounded-full border border-zinc-700 px-6 py-3 text-sm font-medium text-stone-700 hover:bg-neutral-700 hover:text-white focus:outline-none focus:ring active:bg-slate-400"
                   onClick={() => handleIncrement(product)}
                 >
                   <span className="text-black font-sans">+1</span>

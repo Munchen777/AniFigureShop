@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import CatalogComponent from "./components/Catalog";
 import HomePage from "./pages/HomePage";
 import PrivateRoute from "./pages/PrivateRoute";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -13,32 +14,33 @@ import PasswordResetForm from "./components/PasswordResetForm";
 export default function App() {
   return (
     <Router>
-    <AuthProvider>
+      <AuthProvider>
         <CartProvider>
-        <Routes>
+          <Routes>
             <Route path="/" element={<HomePage />} />
 
             <Route element={<PrivateRoute />}>
-                <Route
+              <Route
                 path="/reset-password-done"
                 element={<ResetPasswordDone />}
-                />
-                <Route
+              />
+              <Route
                 path="/reset-password-success"
                 element={<ResetPasswordSuccess />}
-                />
-                <Route
+              />
+              <Route
                 path="/api/v1/reset-password-confirm/:uidb64/:token/"
                 element={<PasswordResetForm />}
-                />
+              />
             </Route>
 
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
-        </Routes>
+            <Route path="/catalog" element={<CatalogComponent />} />
+          </Routes>
         </CartProvider>
-    </AuthProvider>
+      </AuthProvider>
     </Router>
   );
 }
