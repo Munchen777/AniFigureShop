@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+    {% include 'header.html' %}
+        <div class="container mx-auto pt-20 pb-20 mt-40 mb-40 font-semibold text-2xl shadow-2xl shadow-indigo-600 drop-shadow-lg">
+            <form method="post" class="rounded-lg border-4 border-fuchsia-600 relative pt-3 pb-3">
+                {% csrf_token %}
+                <div class="space-y-6 pl-4 divide-y-2">
+                    <div class="flex flex-wrap py-6">
+                        <label for="name">Ваше ФИО</label>
+                        <input type="text" name="name" placeholder="отчество(опционально)" class="ml-5 w-1/2 h-15 placeholder:text-rose-950 pl-4 rounded-3xl bg-gradient-to-r from-violet-600 via-fuchsia-600 via-pink-600 to-blue-600">
+                    </div>
+                    <div class="py-6">
+                        <label for="delivery_address">Адрес доставки:</label>
+                        <input type="text" name="delivery_address" placeholder="Ваш адрес" class="ml-5 w-1/2 h-15 placeholder:text-rose-950 pl-4 rounded-3xl bg-gradient-to-r from-violet-600 via-fuchsia-600 via-pink-600 to-blue-600">
+                    </div>
+
+                    <div class="py-6">
+                        <label for="phone_number">Номер телефона:</label>
+                        <input type="text" name="phone_number" placeholder="+71234567890" class="h-15 placeholder:text-rose-950 pl-4 rounded-3xl bg-gradient-to-r from-violet-600 via-fuchsia-600 via-pink-600 to-blue-600 " required>
+                    </div>
+                    <!-- <div>
+                        <iframe
+                            width="600"
+                            height="450"
+                            style="border:0"
+                            loading="lazy"
+                            allowfullscreen
+                            referrerpolicy="no-referrer-when-downgrade"
+                            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBLjcOdY10pbMXqHQdKkXSEgZAeeZtoAqk
+                                &q=Space+Needle,Seattle+WA">
+                        </iframe>
+                    </div> -->
+                    <div style="width: 400px; height: 400px;" id="map"></div>
+           
+                    <button type="submit" class="text-sm cursor-pointer rounded-3xl bg-gradient-to-r from-violet-600 via-fuchsia-600 via-pink-600 to-blue-600">
+                        Заказать
+                    </button>
+                </div>
+            </form>
+        </div>
+        <!-- <script async
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBAce7uQSQ3wH0osyH0s97iXC5qFOC7d_U&callback=initMap">
+        </script>
+        <script src="{% static 'base/js/maps.js' %}">
+            (g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})({
+               key: "AIzaSyBAce7uQSQ3wH0osyH0s97iXC5qFOC7d_U",
+               v: "weekly"
+               // Add other bootstrap parameters as needed, using camel case.
+               // Use the 'v' parameter to indicate the version to load (alpha, beta, weekly, etc.)
+             });
+         </script> -->
+    {% include 'footer.html' %}
+{% endblock content %}
+
+<!-- <div class="py-6">
+    <label for="delivery">Способ доставки:</label>
+    <div>
+        <label for="id_requires_delivery">Нужна доставка</label>
+        <input type="radio" value="1" name="requires_delivery">
+    </div>
+    <div>
+        <label for="id_requires_delivery">Самовывоз</label>
+        <input type="radio" value="0" name="requires_delivery">
+    </div>
+</div> -->

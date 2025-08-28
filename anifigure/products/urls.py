@@ -5,7 +5,7 @@ from .views import (
     CatalogTemplateView,
 )
 
-app_name = "products"
+app_name = "base"
 
 
 urlpatterns = [

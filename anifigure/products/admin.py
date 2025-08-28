@@ -1,10 +1,16 @@
 from django.contrib import admin
+from .models import Category, Product, ProductImage
 
 
-from .models import Product, ProductImage, Category
+# Register your models here.
 
 
-class ProductInline(admin.TabularInline):
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ['name', 'parent_category', 'category_image', 'description', 'slug', 'order']
+
+
+class ProductImageInline(admin.TabularInline):
     model = ProductImage
 
 
@@ -16,10 +22,4 @@ class ProductAdmin(admin.ModelAdmin):
         ProductInline
     ]
 
-
-@admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
-    list_display = ["name", "parent_category", "description", "slug"]
-
-
-
+# Register your models here.

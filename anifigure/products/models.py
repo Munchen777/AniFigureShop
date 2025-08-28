@@ -1,48 +1,21 @@
-from django.conf import settings
 from django.db import models
+from django.urls import reverse
 
 
 class Category(models.Model):
-    """
-    Model of Category
+    name = models.CharField(max_length=80)
+    parent_category = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
+    description = models.TextField(blank=True)
+    slug = models.SlugField(max_length=80, unique=True, db_index=True, default=name)
+    category_image = models.ImageField(upload_to="categories/", default=None, blank=True, null=True,
+                                       verbose_name="Image")
+    order = models.IntegerField(default=0, verbose_name='Order')
 
-    Attributes:
-        parent_category - parent category of subcategory
-        name - name of category
-        description - the description of category
-        slug - category slug
-        category_image - image of category
-    
-    """
-    parent_category = models.ForeignKey(
-        'self',
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-        verbose_name="Category parent",
-    )
-    name = models.CharField(
-        max_length=80,
-        verbose_name="Category name",
-    )
-    description = models.TextField(
-        blank=True,
-        verbose_name="Category description",
-    )
-    slug = models.SlugField(
-        max_length=80,
-        unique=True,
-        db_index=True,
-        default=name,
-        verbose_name="Category slug",
-    )
-    category_image = models.ImageField(
-        upload_to="categories/",
-        default=None,
-        blank=True,
-        null=True,
-        verbose_name="Category image",
-    )
+    def get_absolute_url(self):
+        return reverse('category', kwargs={'category_slug': self.slug})
+
+    def __str__(self):
+        return self.name
 
 
 class Product(models.Model):
@@ -142,34 +115,17 @@ class Product(models.Model):
         return self.price
 
     def __str__(self):
-        return f"Product №{self.pk} | {self.name}"
-
-
-def product_images_directory_path(instance: "Product", filename: str) -> str:
-    return "products/product_{pk}/images/{filename}".format(
-        pk=instance.product.pk,
-        filename=filename
-    )
+        return self.name
 
 
 class ProductImage(models.Model):
-    """
-    Model of ProductImage
-    
-    Attributes:
-        product - FK to Product model
-        image - image of define product
+    product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
+    image = models.ImageField(upload_to=f"products/", default=None, blank=True, null=True,
+                              verbose_name="Image")
 
-    """
-    product = models.ForeignKey(
-        Product,
-        on_delete=models.CASCADE,
-        related_name='images',
-    )
-    image = models.ImageField(
-        upload_to=product_images_directory_path,
-        default=None,
-        blank=True,
-        null=True,
-        verbose_name="Product Image",
-    )
+    def __str__(self):
+        return f"Image for {self.product.name}"
+
+
+class UploadToCategory(models.Model):
+    file = models.FileField(upload_to='categories/')
