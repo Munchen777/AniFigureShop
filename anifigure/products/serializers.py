@@ -27,15 +27,7 @@ class ProductSerializer(serializers.ModelSerializer):
             "slug",
             "quantity",
             "images",
-            # "category",
-            # "order",
-            # "discount",
-            # "archived",
-            # "available",
-            # "created_by",
-            # "updated_at",
-            # "created_at",
-            # "cart",
+            "currency",
         )
         read_only_fields = ["slug", "quantity", "images"]
         exclude_fields = [

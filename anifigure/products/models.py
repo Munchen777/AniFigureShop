@@ -64,6 +64,13 @@ class Product(models.Model):
         quantity - quantity of product
 
     """
+    CURRENCY_CHOICES = (
+        ("$", "dollar"),
+        ("€", "euro"),
+        ("£", "pound"),
+        ("₽", "ruble"),
+    )
+    
     category = models.ForeignKey(
         Category,
         on_delete=models.CASCADE,
@@ -120,6 +127,12 @@ class Product(models.Model):
     quantity = models.PositiveIntegerField(
         default=0,
         verbose_name="Quantity of product",
+    )
+    currency = models.CharField(
+        null=True,
+        blank=True,
+        choices=CURRENCY_CHOICES,
+        verbose_name="Currency of product price"
     )
 
     def sell_price(self):
